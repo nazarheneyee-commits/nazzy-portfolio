@@ -681,6 +681,22 @@
       z-index: 2;
     }
 
+    .award-badge {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 14px;
+      padding: 4px 10px;
+      font-size: 0.65rem;
+      font-weight: 900;
+      font-family: Inter, sans-serif;
+      color: var(--brown-light);
+      border: 1px solid rgba(173, 121, 80, 0.4);
+      border-radius: 6px;
+      letter-spacing: 0.15em;
+      transform: translateY(-3px);
+      background: rgba(173, 121, 80, 0.06);
+    }
+
     .project-label {
       color: var(--brown-light);
       font-size: 0.76rem;
@@ -702,6 +718,49 @@
     /* =========================================================
        9. POSTER GALLERY
     ========================================================= */
+
+    /* =========================================================
+       HOW I WORK
+    ========================================================= */
+    .how-work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .how-work-image-wrapper {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      aspect-ratio: 4 / 3;
+    }
+
+    .how-work-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .how-work-image-wrapper:hover img {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 700px) {
+      .how-work-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 30px;
+      }
+      .how-work-image-wrapper {
+        aspect-ratio: 3 / 2;
+      }
+    }
 
     /* =========================================================
        PHOTOGRAPHY
@@ -901,22 +960,22 @@
         opacity: 0;
         transform: translateY(12px);
       }
-      
+
       .poster-item:hover .poster-card img,
       .poster-item:hover .poster-card::after {
         transform: translateY(-20px) scale(1.12) translateZ(30px) rotateX(2deg);
       }
-      
+
       .poster-item:hover .poster-card img {
-        box-shadow: 
-          0 40px 75px rgba(0, 0, 0, 0.7), 
+        box-shadow:
+          0 40px 75px rgba(0, 0, 0, 0.7),
           0 15px 35px rgba(173, 121, 80, 0.2);
       }
-      
+
       .poster-item:hover .poster-card::after {
         opacity: 1;
       }
-      
+
       .poster-item:hover .poster-caption {
         opacity: 1;
         transform: translateY(0);
@@ -1901,6 +1960,7 @@
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#posters">Posters</a>
+        <a href="#how-i-work">How I Work</a>
         <a href="#photography">Photography</a>
         <a href="#skills">Skills</a>
         <a href="#contact">Contact</a>
@@ -1921,6 +1981,7 @@
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#posters">Posters</a>
+      <a href="#how-i-work">How I Work</a>
       <a href="#photography">Photography</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
@@ -1982,15 +2043,6 @@
             </p>
           </div>
         </div>
-
-      </div>
-
-      <div class="hero-side-text-top">
-
-      </div>
-
-      <div class="hero-side-text-bottom">
-        <span style="color: var(--brown-light)">—</span> CREATE · PLAN · EXECUTE · GROW
       </div>
     </section>
     <!-- =====================================================
@@ -2280,7 +2332,7 @@
 
             <div class="project-content">
               <div class="project-label">Film · Directed</div>
-              <h3>KAHEL</h3>
+              <h3>KAHEL <span class="award-badge">CHAMPION</span></h3>
               <p>
                 Creative direction, production, videography, editing,
                 and post-production. Champion / Best Film recognition.
@@ -2312,7 +2364,7 @@
 
             <div class="project-content">
               <div class="project-label">Film · Co-Directed</div>
-              <h3>SUGA</h3>
+              <h3>SUGA <span class="award-badge">CHAMPION</span></h3>
               <p>
                 Co-directed and contributed to cinematography,
                 visual storytelling, editing, and production.
@@ -2341,7 +2393,7 @@
 
             <div class="project-content">
               <div class="project-label">Film · Directed</div>
-              <h3>Between Deadlines</h3>
+              <h3>Between Deadlines <span class="award-badge">1ST RUNNER UP</span></h3>
               <p>
                 Description of the project. Replace with your text.
               </p>
@@ -2391,6 +2443,29 @@
             <div class="poster-caption"><strong>Between Deadlines</strong></div>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         HOW I WORK
+    ====================================================== -->
+    <section id="how-i-work">
+      <div class="container">
+        <div class="section-header reveal" style="display: block; margin-bottom: 25px;">
+          <div class="eyebrow" style="margin-bottom: 15px;">PROCESS · BEHIND THE SCENES</div>
+          <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 4rem); font-weight: 700; letter-spacing: -0.02em;">
+            How I work</h2>
+          <p style="max-width: 520px; margin-top: 15px;">From conceptualization to the final cut, every project is driven by purpose, creative vision, and organized execution.</p>
+        </div>
+
+        <div class="how-work-grid">
+          <div class="how-work-image-wrapper work-image-1 reveal">
+            <img src="work/first.jpg" alt="Behind the scenes workflow">
+          </div>
+          <div class="how-work-image-wrapper work-image-2 reveal" style="transition-delay: 0.15s;">
+            <img src="work/second.jpg" alt="On set production">
+          </div>
         </div>
       </div>
     </section>
