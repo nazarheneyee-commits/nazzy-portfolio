@@ -98,6 +98,11 @@
       margin-inline: auto;
     }
 
+    main {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
     /* =========================================================
        3. NAVIGATION
     ========================================================= */
@@ -194,6 +199,8 @@
        4. HERO
     ========================================================= */
     .hero {
+      position: relative;
+      overflow: hidden;
       min-height: 100vh;
       display: grid;
       align-items: center;
@@ -1220,7 +1227,8 @@
       }
 
       .hero h1 {
-        font-size: 3.25rem;
+        font-size: clamp(2.2rem, 12vw, 3.25rem);
+        word-wrap: break-word;
       }
 
       .profile-card {
