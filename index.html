@@ -1091,6 +1091,27 @@
       grid-template-columns: 1fr 1fr;
       gap: 9px;
       margin-top: 22px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .tool-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .tool-grid::-webkit-scrollbar-track {
+      background: rgba(8, 10, 9, 0.32);
+      border-radius: 4px;
+    }
+
+    .tool-grid::-webkit-scrollbar-thumb {
+      background: var(--brown-light);
+      border-radius: 4px;
+    }
+
+    .tool-grid::-webkit-scrollbar-thumb:hover {
+      background: var(--brown);
     }
 
     .tool {
@@ -1944,6 +1965,14 @@
         display: none;
       }
     }
+
+    /* Fix image stretching in tool grid */
+    .tool img {
+      width: 32px !important;
+      height: 32px !important;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 
@@ -2579,43 +2608,120 @@
 
             <div class="tool-grid">
               <div class="tool">
+                <img src="tools/capcut.jpg" width="32" height="32" alt="CapCut" style="margin-bottom: 8px;">
+                <strong>CapCut</strong>
+                <small>Video editing</small>
+              </div>
+              <div class="tool">
+                <img src="tools/canva.jpg" width="32" height="32" alt="Canva" style="margin-bottom: 8px;">
                 <strong>Canva</strong>
                 <small>Design & layouts</small>
               </div>
-
               <div class="tool">
-                <strong>CapCut</strong>
-                <small>Short-form editing</small>
+                <img src="https://cdn.simpleicons.org/linktree/f3f0e8" width="32" height="32" alt="Linktree"
+                  style="margin-bottom: 8px;">
+                <strong>Linktree</strong>
+                <small>Link in bio</small>
               </div>
-
               <div class="tool">
-                <strong>Premiere Pro</strong>
+                <div
+                  style="width: 32px; height: 32px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; color: #31A8FF; background: #001E36; border: 1px solid #31A8FF; border-radius: 4px;">
+                  Ps</div>
+                <strong>Adobe Photoshop</strong>
+                <small>Image editing</small>
+              </div>
+              <div class="tool">
+                <img src="tools/premier.jpg" width="32" height="32" alt="Adobe Premiere Pro"
+                  style="margin-bottom: 8px;">
+                <strong>Adobe Premiere Pro</strong>
                 <small>Video editing</small>
               </div>
-
               <div class="tool">
-                <strong>Lightroom</strong>
+                <div
+                  style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+                  <img src="https://cdn.simpleicons.org/meta/f3f0e8" alt="Meta AI"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                  <img src="https://cdn.simpleicons.org/openai/f3f0e8" alt="ChatGPT"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                  <img src="https://cdn.simpleicons.org/deepseek/f3f0e8" alt="Deepseek"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;"
+                    onerror="this.style.display='none'">
+                  <img src="https://cdn.simpleicons.org/googlegemini/f3f0e8" alt="Gemini AI"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                </div>
+                <strong>AI Assistants</strong>
+                <small>Meta AI · ChatGPT · Deepseek · Gemini AI</small>
+              </div>
+              <div class="tool">
+                <img src="https://cdn.simpleicons.org/picsart/f3f0e8" width="32" height="32" alt="Picsart"
+                  style="margin-bottom: 8px;">
+                <strong>Picsart</strong>
                 <small>Photo editing</small>
               </div>
-
               <div class="tool">
-                <strong>Microsoft Office</strong>
-                <small>Office productivity</small>
+                <div
+                  style="display: flex; flex-direction: row; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+                  <img src="https://cdn.simpleicons.org/facebook/f3f0e8" alt="Facebook"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                  <img src="https://cdn.simpleicons.org/instagram/f3f0e8" alt="Instagram"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                  <img src="https://cdn.simpleicons.org/tiktok/f3f0e8" alt="TikTok"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                  <img src="https://cdn.simpleicons.org/youtube/f3f0e8" alt="YouTube"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                  <img src="https://cdn.simpleicons.org/x/f3f0e8" alt="X"
+                    style="width: 24px !important; height: 24px !important; min-width: 24px; margin: 0; display: inline-block;">
+                  <div
+                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; color: var(--cream); margin: 0;">
+                    in</div>
+                </div>
+                <strong>Social Platforms</strong>
+                <small>Facebook · Instagram · TikTok · YouTube · X · LinkedIn</small>
               </div>
-
               <div class="tool">
+                <img src="tools/davinci.jpg" width="32" height="32" alt="DaVinci Resolve" style="margin-bottom: 8px;">
+                <strong>DaVinci Resolve</strong>
+                <small>Color & editing</small>
+              </div>
+              <div class="tool">
+                <img src="tools/google workspace.jpg" width="32" height="32" alt="Google Workspace"
+                  style="margin-bottom: 8px;">
                 <strong>Google Workspace</strong>
                 <small>Collaboration</small>
               </div>
-
               <div class="tool">
-                <strong>ChatGPT</strong>
-                <small>AI-assisted work</small>
+                <img src="tools/office.jpg" width="32" height="32" alt="Microsoft Office" style="margin-bottom: 8px;">
+                <strong>Microsoft Office</strong>
+                <small>Productivity</small>
               </div>
-
               <div class="tool">
-                <strong>Social Platforms</strong>
-                <small>Facebook · Instagram · TikTok · YouTube</small>
+                <div
+                  style="width: 32px; height: 32px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; color: white; background: #2b579a; border-radius: 4px;">
+                  W</div>
+                <strong>Word</strong>
+                <small>Documents</small>
+              </div>
+              <div class="tool">
+                <img src="tools/ppt.jpg" width="32" height="32" alt="PowerPoint" style="margin-bottom: 8px;">
+                <strong>PowerPoint</strong>
+                <small>Presentations</small>
+              </div>
+              <div class="tool">
+                <img src="tools/excel.jpg" width="32" height="32" alt="Excel" style="margin-bottom: 8px;">
+                <strong>Excel</strong>
+                <small>Spreadsheets</small>
+              </div>
+              <div class="tool">
+                <div
+                  style="width: 32px; height: 32px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; color: white; background: #2D8CFF; border-radius: 8px;">
+                  Z</div>
+                <strong>Zoom</strong>
+                <small>Video meetings</small>
+              </div>
+              <div class="tool">
+                <img src="tools/lightroom.jpg" width="32" height="32" alt="Lightroom" style="margin-bottom: 8px;">
+                <strong>Lightroom</strong>
+                <small>Photo editing</small>
               </div>
             </div>
           </article>
@@ -2657,11 +2763,9 @@
           opportunities.
         </p>
 
-        <a class="email" href="mailto:nazzyyee.work@gmail.com">
-          nazzyyee.work@gmail.com
-        </a>
 
-        <p>+63 963 013 8708 · Bago City, Philippines</p>
+
+        <p>Bago City, Philippines</p>
       </div>
     </section>
 
@@ -2669,7 +2773,7 @@
 
   <footer class="container">
     <span>© 2026 Ma. Nazarhene Nichola S. Yee</span>
-    <span>Creative Portfolio</span>
+
   </footer>
 
   <script>
