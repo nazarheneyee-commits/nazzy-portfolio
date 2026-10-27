@@ -3,21 +3,33 @@
 
 <head>
   <script>
-    // Feature detection for safe 3D on-scroll animations
+    // Instant theme resolution to prevent flash of wrong theme (FOUT)
     try {
+      var savedTheme = localStorage.getItem('nazzy-theme');
+      var theme = savedTheme;
+      if (!theme) {
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        theme = prefersDark ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
       if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('reveal-ready');
         document.documentElement.classList.add('has-3d-system');
       }
-    } catch(e) {}
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
   </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Ma. Nazarhene Nichola S. Yee — Award-winning Film Director, AI Content Creator, Graphic Designer, and Marketing & Administration Professional based in Negros Occidental, Philippines.">
-  <meta name="keywords" content="Nazarhene Yee, Film Director, AI Video Production, Laudate Mariam, Blessie Food Hub, BSOA Alliance, Virtual Assistant, Graphic Design, Kahel, Suga, Between Deadlines">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description"
+    content="Ma. Nazarhene Nichola S. Yee — Award-winning Film Director, AI Content Creator, Graphic Designer, and Marketing & Administration Professional based in Negros Occidental, Philippines.">
+  <meta name="keywords"
+    content="Nazarhene Yee, Video Editor,Photo Editor, AI Video Production, Laudate Mariam, Blessie Food Hub, BSOA Alliance, Virtual Assistant, Graphic Design, Kahel, Suga, Between Deadlines">
   <meta name="author" content="Ma. Nazarhene Nichola S. Yee">
   <meta property="og:title" content="Ma. Nazarhene Nichola S. Yee — Creative & Professional Portfolio">
-  <meta property="og:description" content="Where Cinematic Vision Meets Operational Precision. Award-winning Film Directing, AI Video Production, Graphic Design, and Virtual Assistance.">
+  <meta property="og:description"
+    content="Where Cinematic Vision Meets Operational Precision. Award-winning Film Directing, AI Video Production, Graphic Design, and Virtual Assistance.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="images/landing.jpg">
   <title>Ma. Nazarhene Nichola S. Yee — Creative Director & Professional Portfolio</title>
@@ -25,14 +37,84 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet">
 
   <style>
     /* =========================================================
-       1. DESIGN TOKENS & SYSTEM
-       Dark Forest Noir, Warm Burnished Bronze, Warm Ivory Cream
+       CSS @PROPERTY DEFINITIONS FOR NATIVE COLOR INTERPOLATION
+       Enables smooth, GPU-accelerated gradient & variable transitions
     ========================================================= */
-    :root {
+    @property --bg-void { syntax: '<color>'; inherits: true; initial-value: #050806; }
+    @property --bg-primary { syntax: '<color>'; inherits: true; initial-value: #070c08; }
+    @property --bg-secondary { syntax: '<color>'; inherits: true; initial-value: #0c140e; }
+    @property --bg-panel { syntax: '<color>'; inherits: true; initial-value: #111a13; }
+    @property --bg-panel-hover { syntax: '<color>'; inherits: true; initial-value: #16241a; }
+    @property --bg-card { syntax: '<color>'; inherits: true; initial-value: rgba(17, 26, 19, 0.82); }
+    @property --bg-glass { syntax: '<color>'; inherits: true; initial-value: rgba(10, 16, 11, 0.85); }
+    @property --cream { syntax: '<color>'; inherits: true; initial-value: #faf7f0; }
+    @property --cream-soft { syntax: '<color>'; inherits: true; initial-value: #eee8dc; }
+    @property --cream-muted { syntax: '<color>'; inherits: true; initial-value: #c8c2b5; }
+    @property --text-muted { syntax: '<color>'; inherits: true; initial-value: #9aa499; }
+    @property --text-subtle { syntax: '<color>'; inherits: true; initial-value: #747f73; }
+    @property --bronze { syntax: '<color>'; inherits: true; initial-value: #c59b6d; }
+    @property --bronze-bright { syntax: '<color>'; inherits: true; initial-value: #e2ba8c; }
+    @property --bronze-light { syntax: '<color>'; inherits: true; initial-value: #dfb27e; }
+    @property --bronze-deep { syntax: '<color>'; inherits: true; initial-value: #8f683e; }
+    @property --bronze-subtle { syntax: '<color>'; inherits: true; initial-value: rgba(197, 155, 109, 0.15); }
+    @property --bronze-border { syntax: '<color>'; inherits: true; initial-value: rgba(197, 155, 109, 0.28); }
+    @property --bronze-glow { syntax: '<color>'; inherits: true; initial-value: rgba(197, 155, 109, 0.25); }
+    @property --forest { syntax: '<color>'; inherits: true; initial-value: #2f4f37; }
+    @property --forest-light { syntax: '<color>'; inherits: true; initial-value: #4c7755; }
+    @property --forest-deep { syntax: '<color>'; inherits: true; initial-value: #192b1f; }
+    @property --forest-subtle { syntax: '<color>'; inherits: true; initial-value: rgba(76, 119, 85, 0.18); }
+    @property --forest-border { syntax: '<color>'; inherits: true; initial-value: rgba(76, 119, 85, 0.3); }
+    @property --forest-glow { syntax: '<color>'; inherits: true; initial-value: rgba(58, 98, 69, 0.28); }
+    @property --border { syntax: '<color>'; inherits: true; initial-value: rgba(197, 155, 109, 0.2); }
+    @property --border-subtle { syntax: '<color>'; inherits: true; initial-value: rgba(255, 255, 255, 0.08); }
+    @property --border-highlight { syntax: '<color>'; inherits: true; initial-value: rgba(226, 186, 140, 0.48); }
+
+    /* =========================================================
+       1. DESIGN TOKENS & DUAL THEME SYSTEM
+       Dark Forest Noir (Dark) & Warm Heritage Ivory (Light)
+    ========================================================= */
+    :root,
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      transition: --bg-void 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-primary 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-secondary 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-panel 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-panel-hover 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-card 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-glass 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --cream 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --cream-soft 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --cream-muted 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --text-muted 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --text-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-bright 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-light 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-deep 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-border 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-glow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-light 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-deep 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-border 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-glow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --border 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --border-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --border-highlight 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
       --bg-void: #050806;
       --bg-primary: #070c08;
       --bg-secondary: #0c140e;
@@ -85,9 +167,89 @@
     }
 
     /* =========================================================
+       PREMIUM LIGHT THEME DESIGN TOKENS
+       Warm Ivory, Alabaster, Deep Forest Noir & Rich Bronze
+    ========================================================= */
+    :root[data-theme="light"] {
+      color-scheme: light;
+      transition: --bg-void 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-primary 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-secondary 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-panel 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-panel-hover 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-card 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bg-glass 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --cream 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --cream-soft 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --cream-muted 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --text-muted 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --text-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-bright 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-light 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-deep 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-border 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --bronze-glow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-light 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-deep 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-border 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --forest-glow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --border 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --border-subtle 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  --border-highlight 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+
+      --bg-void: #f5f1eb;
+      --bg-primary: #faf8f5;
+      --bg-secondary: #f2ece2;
+      --bg-panel: #ffffff;
+      --bg-panel-hover: #f5f0e6;
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --bg-glass: rgba(255, 255, 255, 0.94);
+
+      --bronze: #9c6d3b;
+      --bronze-bright: #835626;
+      --bronze-light: #6e461c;
+      --bronze-deep: #553412;
+      --bronze-subtle: rgba(156, 109, 59, 0.1);
+      --bronze-border: rgba(156, 109, 59, 0.28);
+      --bronze-glow: rgba(156, 109, 59, 0.18);
+
+      --forest: #1e3826;
+      --forest-light: #2c5037;
+      --forest-deep: #132418;
+      --forest-subtle: rgba(44, 80, 55, 0.08);
+      --forest-border: rgba(44, 80, 55, 0.22);
+      --forest-glow: rgba(44, 80, 55, 0.14);
+
+      --cream: #131a15;
+      --cream-soft: #243328;
+      --cream-muted: #4e5f52;
+      --text-muted: #6b7c70;
+      --text-subtle: #89998e;
+
+      --border: rgba(156, 109, 59, 0.22);
+      --border-subtle: rgba(19, 26, 21, 0.09);
+      --border-highlight: rgba(156, 109, 59, 0.52);
+
+      --shadow-sm: 0 4px 14px rgba(19, 26, 21, 0.05);
+      --shadow-card: 0 12px 35px -8px rgba(19, 26, 21, 0.08);
+      --shadow-hover: 0 20px 48px -10px rgba(19, 26, 21, 0.14), 0 0 25px rgba(156, 109, 59, 0.12);
+    }
+
+    /* =========================================================
        2. RESET & GLOBAL BASE
     ========================================================= */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -98,14 +260,19 @@
       scroll-padding-top: 92px;
       overflow-x: hidden;
       width: 100%;
+      max-width: 100%;
       background: var(--bg-void);
       color-scheme: dark;
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
       min-height: 100vh;
+      min-height: 100dvh;
       overflow-x: hidden;
       width: 100%;
+      max-width: 100%;
+      position: relative;
       background-color: var(--bg-primary);
       color: var(--cream);
       font-family: var(--font-sans);
@@ -113,8 +280,11 @@
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* Ambient lighting backdrop layer 1: Dark Mode Ambient Glow */
     body::before {
       content: "";
       position: fixed;
@@ -122,11 +292,35 @@
       z-index: -2;
       pointer-events: none;
       background:
-        radial-gradient(circle at 85% 10%, rgba(197, 155, 109, 0.1), transparent 38%),
-        radial-gradient(circle at 8% 45%, rgba(47, 79, 55, 0.15), transparent 42%),
-        radial-gradient(circle at 92% 75%, rgba(197, 155, 109, 0.08), transparent 35%),
-        radial-gradient(circle at 50% 100%, rgba(25, 43, 31, 0.2), transparent 50%),
-        var(--bg-primary);
+        radial-gradient(circle at 85% 10%, rgba(197, 155, 109, 0.12), transparent 38%),
+        radial-gradient(circle at 8% 45%, rgba(47, 79, 55, 0.16), transparent 42%),
+        radial-gradient(circle at 92% 75%, rgba(197, 155, 109, 0.09), transparent 35%),
+        radial-gradient(circle at 50% 100%, rgba(25, 43, 31, 0.22), transparent 50%);
+      opacity: 1;
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    :root[data-theme="light"] body::before {
+      opacity: 0;
+    }
+
+    /* Ambient lighting backdrop layer 2: Light Mode Warm Heritage Ivory Glow */
+    .ambient-glow-light {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 85% 10%, rgba(156, 109, 59, 0.07), transparent 45%),
+        radial-gradient(circle at 8% 45%, rgba(44, 80, 55, 0.05), transparent 45%),
+        radial-gradient(circle at 92% 75%, rgba(156, 109, 59, 0.06), transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(44, 80, 55, 0.06), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    :root[data-theme="light"] .ambient-glow-light {
+      opacity: 1;
     }
 
     body::after {
@@ -145,7 +339,8 @@
       transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    img, video {
+    img,
+    video {
       display: block;
       width: 100%;
       height: auto;
@@ -169,6 +364,7 @@
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
+
     ::-webkit-scrollbar {
       width: 0px;
       height: 0px;
@@ -178,6 +374,35 @@
     .container {
       width: min(92%, var(--container));
       margin-inline: auto;
+      padding-left: var(--safe-left);
+      padding-right: var(--safe-right);
+    }
+
+    /* Universal Grid & Flex containment against horizontal overflow */
+    .hero-grid>*,
+    .about-grid>*,
+    .experience-grid>*,
+    .projects-grid>*,
+    .grid-square-videos>*,
+    .grid-vertical-videos>*,
+    .grid-bottle-videos>*,
+    .ambassador-spotlight>*,
+    .poster-gallery-grid>*,
+    .process-steps>*,
+    .bts-grid>*,
+    .photo-stack-container>*,
+    .photo-grid-view>*,
+    .skills-layout>*,
+    .tools-modern-grid>*,
+    .contact-grid>*,
+    .contact-info-block>*,
+    .contact-cards-stack>* {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    body.menu-open {
+      overflow: hidden;
     }
 
     .section-header {
@@ -333,9 +558,9 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-                  background 0.3s ease,
-                  border-color 0.3s ease,
-                  box-shadow 0.3s ease;
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
       will-change: transform;
     }
 
@@ -440,11 +665,532 @@
       width: 100%;
     }
 
+    /* =========================================================
+       SYNCHRONIZED THEME TRANSITION ENGINE
+       Guarantees zero snapping, zero flicker across all visual tokens
+    ========================================================= */
+    html.theme-transitioning,
+    html.theme-transitioning *,
+    html.theme-transitioning *::before,
+    html.theme-transitioning *::after {
+      transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity !important;
+      transition-duration: 0.5s !important;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+      transition-delay: 0s !important;
+    }
+
+    /* Base Steady-State Theme Transitions for Key Surfaces */
+    body,
+    .navbar,
+    .mobile-nav,
+    .hero-metrics,
+    .experience-card,
+    .project-card,
+    .square-video-card,
+    .vertical-video-card,
+    .poster-item-card,
+    .pillar-card,
+    .process-card,
+    .skill-card,
+    .tool-item,
+    .contact-form-card,
+    .contact-method-card,
+    .education-card,
+    .photo-caption-card,
+    .modal-container,
+    .modal-info-bar,
+    .floating-top-pill,
+    .skill-pill,
+    .badge-award,
+    .badge-category,
+    .status-pill,
+    .view-mode-btn,
+    .btn-copy-action,
+    .modal-close-btn,
+    .site-footer {
+      transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       flex-shrink: 0;
+    }
+
+    /* =========================================================
+       THEME TOGGLE BUTTON & SMOOTH ICON MORPH
+    ========================================================= */
+    .theme-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--bronze-bright);
+      background: var(--bg-panel-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 0 16px var(--bronze-glow);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--bronze-bright);
+      outline-offset: 2px;
+    }
+
+    .theme-icon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.3s ease,
+        color 0.3s ease;
+    }
+
+    /* Dark Mode Theme Toggle States: Show Moon, Tuck Sun */
+    :root:not([data-theme="light"]) .theme-icon-sun,
+    :root[data-theme="dark"] .theme-icon-sun {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+      pointer-events: none;
+    }
+
+    :root:not([data-theme="light"]) .theme-icon-moon,
+    :root[data-theme="dark"] .theme-icon-moon {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+      color: var(--bronze-bright);
+    }
+
+    /* Light Mode Theme Toggle States: Show Sun with warm radiance, Tuck Moon */
+    :root[data-theme="light"] .theme-icon-moon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+      pointer-events: none;
+    }
+
+    :root[data-theme="light"] .theme-icon-sun {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+      color: #9c6d3b;
+    }
+
+    /* Mobile Drawer Appearance Toggle Row */
+    .mobile-nav-theme-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      margin-bottom: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .mobile-theme-label {
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .theme-toggle-mobile {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 14px;
+      min-height: 40px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .theme-toggle-mobile:hover {
+      border-color: var(--bronze-bright);
+      color: var(--bronze-bright);
+    }
+
+    .mobile-theme-icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      position: relative;
+    }
+
+    .mobile-theme-icon-wrap svg {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      stroke: currentColor;
+      transition: transform 0.35s ease, opacity 0.3s ease;
+    }
+
+    :root:not([data-theme="light"]) .theme-icon-mini-sun,
+    :root[data-theme="dark"] .theme-icon-mini-sun {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    :root:not([data-theme="light"]) .theme-icon-mini-moon,
+    :root[data-theme="dark"] .theme-icon-mini-moon {
+      opacity: 1;
+      transform: scale(1);
+      color: var(--bronze-bright);
+    }
+
+    :root[data-theme="light"] .theme-icon-mini-moon {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    :root[data-theme="light"] .theme-icon-mini-sun {
+      opacity: 1;
+      transform: scale(1);
+      color: #9c6d3b;
+    }
+
+    /* Light Theme Component Overrides */
+    :root[data-theme="light"] .navbar {
+      background: rgba(250, 248, 245, 0.88);
+      border-bottom-color: var(--border-subtle);
+    }
+
+    :root[data-theme="light"] .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom-color: var(--bronze-border);
+      box-shadow: 0 10px 30px rgba(19, 26, 21, 0.06);
+    }
+
+    :root[data-theme="light"] .navbar.nav-scrolling-up {
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 14px 38px rgba(19, 26, 21, 0.08), 0 0 24px rgba(156, 109, 59, 0.15);
+    }
+
+    :root[data-theme="light"] .mobile-nav {
+      background: rgba(255, 255, 255, 0.98);
+      border-bottom-color: var(--bronze-border);
+      box-shadow: 0 25px 40px rgba(19, 26, 21, 0.12);
+    }
+
+    :root[data-theme="light"] .hero-glow-1 {
+      background: radial-gradient(circle, rgba(156, 109, 59, 0.1) 0%, transparent 70%);
+    }
+
+    :root[data-theme="light"] .hero-glow-2 {
+      background: radial-gradient(circle, rgba(44, 80, 55, 0.08) 0%, transparent 70%);
+    }
+
+    :root[data-theme="light"] .hero-watermark {
+      color: rgba(19, 26, 21, 0.025);
+    }
+
+    :root[data-theme="light"] .status-pill {
+      background: rgba(44, 80, 55, 0.08);
+      color: #1b532e;
+      border-color: rgba(44, 80, 55, 0.22);
+      box-shadow: 0 4px 15px rgba(19, 26, 21, 0.04);
+    }
+
+    :root[data-theme="light"] .status-dot {
+      background: #16a34a;
+    }
+
+    :root[data-theme="light"] .status-dot::after {
+      background: #16a34a;
+    }
+
+    :root[data-theme="light"] .hero-card-frame {
+      background: linear-gradient(145deg, rgba(156, 109, 59, 0.3) 0%, rgba(44, 80, 55, 0.15) 60%, rgba(156, 109, 59, 0.08) 100%);
+      box-shadow: var(--shadow-card), 0 0 40px rgba(156, 109, 59, 0.1);
+    }
+
+    :root[data-theme="light"] .btn-primary {
+      background: linear-gradient(135deg, #a4723c 0%, #855827 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(156, 109, 59, 0.3);
+    }
+
+    :root[data-theme="light"] .btn-primary:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 8px 25px rgba(156, 109, 59, 0.4);
+    }
+
+    :root[data-theme="light"] .btn-outline {
+      background: rgba(255, 255, 255, 0.85);
+      color: var(--cream);
+      border-color: var(--bronze-border);
+    }
+
+    :root[data-theme="light"] .btn-outline:hover {
+      background: var(--bronze-subtle);
+      border-color: var(--bronze-bright);
+      color: var(--bronze-bright);
+    }
+
+    :root[data-theme="light"] .badge-award {
+      background: linear-gradient(135deg, rgba(156, 109, 59, 0.15) 0%, rgba(156, 109, 59, 0.05) 100%);
+      border-color: var(--bronze-border);
+      color: var(--bronze-bright);
+    }
+
+    :root[data-theme="light"] .badge-award.badge-champ {
+      background: linear-gradient(135deg, rgba(156, 109, 59, 0.2) 0%, rgba(131, 86, 38, 0.1) 100%);
+      border-color: var(--bronze-bright);
+      box-shadow: 0 0 14px rgba(156, 109, 59, 0.15);
+    }
+
+    :root[data-theme="light"] .badge-category {
+      background: rgba(19, 26, 21, 0.05);
+      border-color: var(--border-subtle);
+      color: var(--cream-soft);
+    }
+
+    :root[data-theme="light"] .pillar-tag {
+      background: rgba(19, 26, 21, 0.05);
+      color: var(--cream-soft);
+      border-color: var(--border-subtle);
+    }
+
+    :root[data-theme="light"] .profile-feature-img-wrap {
+      background: radial-gradient(circle at 50% 30%, #e8e2d8 0%, #ece5db 80%);
+    }
+
+    :root[data-theme="light"] .education-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(244, 239, 230, 0.95) 100%);
+      border-color: var(--border);
+      box-shadow: var(--shadow-card);
+    }
+
+    :root[data-theme="light"] .edu-meta-row {
+      border-top-color: var(--border-subtle);
+    }
+
+    :root[data-theme="light"] .edu-degree-title {
+      color: var(--cream);
+    }
+
+    :root[data-theme="light"] .edu-univ-name {
+      color: var(--cream-muted);
+    }
+
+    :root[data-theme="light"] .edu-degree-code {
+      background: var(--bronze-subtle);
+      color: var(--bronze-bright);
+      border-color: var(--bronze-border);
+    }
+
+    :root[data-theme="light"] .exp-badge {
+      background: rgba(19, 26, 21, 0.05);
+      color: var(--cream-soft);
+      border-color: var(--border-subtle);
+    }
+
+    /* (Light body backdrop now handled via .ambient-glow-light cross-fade) */
+
+    :root[data-theme="light"] .hero-card-location {
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--cream);
+      border-color: rgba(156, 109, 59, 0.28);
+      box-shadow: 0 4px 12px rgba(19, 26, 21, 0.06);
+    }
+
+    :root[data-theme="light"] .films-section,
+    :root[data-theme="light"] .photography-section,
+    :root[data-theme="light"] .posters-section,
+    :root[data-theme="light"] .skills-section {
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+    }
+
+    :root[data-theme="light"] .contact-section {
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    }
+
+    :root[data-theme="light"] .skill-pill {
+      background: #f4efe6;
+      border: 1px solid rgba(156, 109, 59, 0.22);
+      color: var(--cream-soft);
+      box-shadow: 0 2px 6px rgba(19, 26, 21, 0.04);
+    }
+
+    :root[data-theme="light"] .skill-pill:hover {
+      background: var(--bronze-subtle);
+      border-color: var(--bronze-bright);
+      color: var(--bronze-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(156, 109, 59, 0.12);
+    }
+
+    :root[data-theme="light"] .tool-item {
+      background: rgba(255, 255, 255, 0.92);
+      border-color: var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+    }
+
+    :root[data-theme="light"] .site-footer {
+      background: #ede6dc;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    :root[data-theme="light"] .photo-card {
+      background: #ede6dc;
+      box-shadow: 0 16px 40px rgba(19, 26, 21, 0.12);
+    }
+
+    :root[data-theme="light"] .poster-img-container {
+      background: #ede6dc;
+    }
+
+    :root[data-theme="light"] .form-input,
+    :root[data-theme="light"] .form-select,
+    :root[data-theme="light"] .form-textarea {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--cream);
+    }
+
+    :root[data-theme="light"] .form-input:focus,
+    :root[data-theme="light"] .form-select:focus,
+    :root[data-theme="light"] .form-textarea:focus {
+      border-color: var(--bronze-bright);
+      box-shadow: 0 0 15px rgba(156, 109, 59, 0.18);
+      background: #ffffff;
+    }
+
+    :root[data-theme="light"] .form-select option {
+      background: #ffffff;
+      color: #131a15;
+    }
+
+    :root[data-theme="light"] .form-notification.success {
+      background: rgba(34, 197, 94, 0.08);
+      border-color: rgba(34, 197, 94, 0.35);
+      color: #15803d;
+    }
+
+    :root[data-theme="light"] .btn-copy-action {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--bronze-bright);
+    }
+
+    :root[data-theme="light"] .btn-copy-action:hover {
+      background: var(--bronze);
+      color: #ffffff;
+    }
+
+    :root[data-theme="light"] .floating-top-pill {
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--cream);
+      border-color: var(--border);
+      box-shadow: 0 10px 25px rgba(19, 26, 21, 0.08);
+    }
+
+    :root[data-theme="light"] .floating-top-pill:hover {
+      background: var(--bronze);
+      color: #ffffff;
+    }
+
+    :root[data-theme="light"] .modal-backdrop {
+      background: rgba(20, 28, 22, 0.82);
+    }
+
+    :root[data-theme="light"] .modal-container {
+      background: #ffffff;
+      border-color: var(--bronze-border);
+      box-shadow: 0 25px 60px rgba(19, 26, 21, 0.25);
+    }
+
+    :root[data-theme="light"] .modal-info-bar {
+      background: #f7f4ee;
+      border-top-color: var(--border-subtle);
+    }
+
+    :root[data-theme="light"] .modal-close-btn {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--cream);
+    }
+
+    :root[data-theme="light"] .modal-close-btn:hover {
+      background: var(--bronze);
+      color: #ffffff;
+    }
+
+    :root[data-theme="light"] .btn-video-icon {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: var(--border-subtle);
+      color: var(--cream);
+    }
+
+    :root[data-theme="light"] .btn-video-icon:hover {
+      background: var(--bg-panel-hover);
+      border-color: var(--bronze-bright);
+      color: var(--bronze-bright);
+    }
+
+    :root[data-theme="light"] .video-play-btn {
+      background: rgba(255, 255, 255, 0.92);
+      border-color: var(--bronze-bright);
+      color: var(--bronze-bright);
+      box-shadow: 0 0 25px rgba(156, 109, 59, 0.3);
+    }
+
+    :root[data-theme="light"] .video-play-btn:hover {
+      background: var(--bronze);
+      color: #ffffff;
+    }
+
+    :root[data-theme="light"] .btn-stack-ctrl {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--cream);
+    }
+
+    :root[data-theme="light"] .view-mode-btn {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--cream-soft);
+    }
+
+    :root[data-theme="light"] .view-mode-btn.active {
+      background: var(--bronze);
+      color: #ffffff;
+      border-color: var(--bronze);
+    }
+
+    :root[data-theme="light"] .ambassador-spotlight {
+      background: #ffffff;
+      border-color: var(--border);
+    }
+
+    :root[data-theme="light"] .poster-hover-zoom {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: var(--border);
+      color: var(--cream);
     }
 
     .menu-button {
@@ -487,9 +1233,11 @@
     .menu-button[aria-expanded="true"] .menu-icon span:nth-child(1) {
       transform: translateY(7px) rotate(45deg);
     }
+
     .menu-button[aria-expanded="true"] .menu-icon span:nth-child(2) {
       opacity: 0;
     }
+
     .menu-button[aria-expanded="true"] .menu-icon span:nth-child(3) {
       transform: translateY(-7px) rotate(-45deg);
     }
@@ -497,19 +1245,21 @@
     /* Mobile Nav Drawer */
     .mobile-nav {
       position: fixed;
-      top: var(--nav-height);
+      top: calc(var(--nav-height) + var(--safe-top));
       left: 0;
       right: 0;
-      max-height: calc(100vh - var(--nav-height));
+      max-height: calc(100vh - var(--nav-height) - var(--safe-top));
+      max-height: calc(100dvh - var(--nav-height) - var(--safe-top));
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background: rgba(8, 14, 10, 0.98);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       border-bottom: 1px solid var(--bronze-border);
-      padding: 24px 6%;
+      padding: 20px calc(6% + var(--safe-right)) calc(30px + var(--safe-bottom)) calc(6% + var(--safe-left));
       display: none;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
       box-shadow: 0 25px 40px rgba(0, 0, 0, 0.8);
       z-index: 999;
       transform: translateY(-10px);
@@ -524,10 +1274,11 @@
     }
 
     .mobile-nav a {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       font-weight: 600;
       color: var(--cream-soft);
-      padding: 10px 0;
+      padding: 12px 0;
+      min-height: 48px;
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
@@ -546,18 +1297,20 @@
     .hero {
       position: relative;
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       align-items: center;
       padding: calc(var(--nav-height) + 40px) 0 75px;
       overflow: hidden;
+      contain: paint;
     }
 
     .hero-glow-1 {
       position: absolute;
       top: 15%;
       right: 8%;
-      width: 500px;
-      height: 500px;
+      width: min(500px, 90vw);
+      height: min(500px, 90vw);
       border-radius: 50%;
       background: radial-gradient(circle, rgba(197, 155, 109, 0.12) 0%, transparent 70%);
       filter: blur(80px);
@@ -568,8 +1321,8 @@
       position: absolute;
       bottom: 10%;
       left: 5%;
-      width: 600px;
-      height: 600px;
+      width: min(600px, 95vw);
+      height: min(600px, 95vw);
       border-radius: 50%;
       background: radial-gradient(circle, rgba(47, 79, 55, 0.18) 0%, transparent 70%);
       filter: blur(100px);
@@ -578,7 +1331,7 @@
 
     .hero-watermark {
       position: absolute;
-      right: -2%;
+      right: 0;
       top: 15%;
       font-family: var(--font-serif);
       font-size: clamp(8rem, 18vw, 20rem);
@@ -589,6 +1342,8 @@
       pointer-events: none;
       z-index: 0;
       white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
     }
 
     .hero-grid {
@@ -636,8 +1391,15 @@
     }
 
     @keyframes pulseDot {
-      0% { transform: scale(0.8); opacity: 0.8; }
-      100% { transform: scale(2.4); opacity: 0; }
+      0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
     }
 
     .hero-h1 {
@@ -1120,7 +1882,8 @@
       justify-content: center;
     }
 
-    .filter-tab {
+    .filter-tab,
+    .photo-filter {
       padding: 9px 20px;
       border-radius: var(--radius-pill);
       font-size: 0.84rem;
@@ -1133,12 +1896,14 @@
       transition: all 0.25s ease;
     }
 
-    .filter-tab:hover {
+    .filter-tab:hover,
+    .photo-filter:hover {
       border-color: var(--bronze-bright);
       color: var(--bronze-bright);
     }
 
-    .filter-tab.active {
+    .filter-tab.active,
+    .photo-filter.active {
       background: var(--bronze-subtle);
       border-color: var(--bronze-bright);
       color: var(--bronze-bright);
@@ -1269,7 +2034,7 @@
     .films-section {
       padding: 110px 0 95px;
       position: relative;
-      background: linear-gradient(180deg, var(--bg-primary) 0%, #090e0a 50%, var(--bg-primary) 100%);
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
       border-top: 1px solid var(--border-subtle);
     }
 
@@ -1572,8 +2337,8 @@
     .ambassador-section {
       padding: clamp(80px, 9vw, 130px) 0;
       background: radial-gradient(circle at 85% 20%, rgba(197, 160, 89, 0.09) 0%, transparent 60%),
-                  radial-gradient(circle at 15% 85%, rgba(42, 63, 53, 0.18) 0%, transparent 50%),
-                  var(--bg-card);
+        radial-gradient(circle at 15% 85%, rgba(42, 63, 53, 0.18) 0%, transparent 50%),
+        var(--bg-card);
       border-top: 1px solid var(--border);
       position: relative;
       overflow: hidden;
@@ -1678,12 +2443,15 @@
         grid-template-columns: 1fr;
         text-align: center;
       }
+
       .ambassador-player-frame {
         max-width: 320px;
       }
+
       .ambassador-badges {
         justify-content: center;
       }
+
       .ambassador-org {
         justify-content: center;
       }
@@ -1696,7 +2464,7 @@
     .posters-section {
       padding: 110px 0 95px;
       position: relative;
-      background: linear-gradient(180deg, var(--bg-primary) 0%, #090f0b 50%, var(--bg-primary) 100%);
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
       border-top: 1px solid var(--border-subtle);
     }
 
@@ -1907,7 +2675,7 @@
     .photography-section {
       padding: 110px 0 95px;
       position: relative;
-      background: linear-gradient(180deg, var(--bg-primary) 0%, #090e0b 50%, var(--bg-primary) 100%);
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
       border-top: 1px solid var(--border-subtle);
     }
 
@@ -1920,7 +2688,11 @@
     }
 
     .view-mode-btn {
-      padding: 7px 18px;
+      padding: 10px 20px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border-radius: var(--radius-pill);
       font-size: 0.8rem;
       font-weight: 700;
@@ -2017,12 +2789,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+      contain: paint;
+      width: 100%;
+      max-width: 100%;
     }
 
     .photo-stack {
       position: relative;
-      width: 310px;
-      height: 410px;
+      width: min(290px, 80vw);
+      aspect-ratio: 310 / 410;
+      height: auto;
+      max-width: 100%;
+      margin-inline: auto;
     }
 
     .photo-card {
@@ -2121,13 +2900,13 @@
     .skills-section {
       padding: 110px 0 95px;
       position: relative;
-      background: linear-gradient(180deg, var(--bg-primary) 0%, #080e0a 50%, var(--bg-primary) 100%);
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
       border-top: 1px solid var(--border-subtle);
     }
 
     .skills-layout {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 28px;
     }
 
@@ -2135,7 +2914,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
-      padding: 32px 26px;
+      padding: 32px 30px;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -2144,7 +2923,7 @@
 
     .skill-card:hover {
       border-color: var(--bronze-bright);
-      transform: translateY(-5px);
+      transform: translateY(-4px);
       box-shadow: var(--shadow-hover);
     }
 
@@ -2159,24 +2938,57 @@
 
     .skill-card h3 {
       font-family: var(--font-serif);
-      font-size: 1.4rem;
+      font-size: 1.45rem;
       font-weight: 700;
       color: var(--cream);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .skill-card p {
-      font-size: 0.91rem;
+      font-size: 0.92rem;
       color: var(--cream-muted);
       line-height: 1.65;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .skill-pill-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: auto;
+      gap: 9px;
+      margin-top: 0;
+    }
+
+    /* Landscape Full-Width Digital Toolkit Card */
+    .skill-card-toolkit {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 36px;
+      align-items: center;
+      padding: 36px 34px;
+    }
+
+    .skill-card-toolkit .toolkit-header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .skill-card-toolkit .toolkit-header p {
+      margin-bottom: 0;
+    }
+
+    .skill-card-toolkit .tools-modern-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 12px;
+      margin-top: 0;
+    }
+
+    .skill-card-toolkit .tool-item:last-child {
+      grid-column: auto !important;
+      max-width: none !important;
+      margin: 0 !important;
     }
 
     .skill-pill {
@@ -2255,6 +3067,7 @@
         grid-column: 2;
       }
     }
+
     @media (max-width: 600px) {
       .tools-modern-grid .tool-item:last-child:nth-child(2n+1) {
         grid-column: 1 / -1;
@@ -2270,7 +3083,7 @@
     .contact-section {
       padding: 120px 0 95px;
       position: relative;
-      background: linear-gradient(180deg, var(--bg-primary) 0%, #060a07 100%);
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     }
 
     .contact-grid {
@@ -2301,6 +3114,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
+      min-width: 0;
+      max-width: 100%;
       transition: all 0.3s ease;
     }
 
@@ -2314,6 +3129,13 @@
       display: flex;
       align-items: center;
       gap: 14px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .contact-method-left>div:last-child {
+      min-width: 0;
+      flex: 1 1 auto;
     }
 
     .contact-method-icon {
@@ -2342,6 +3164,8 @@
       font-size: 0.95rem;
       font-weight: 600;
       color: var(--cream);
+      word-break: break-all;
+      overflow-wrap: anywhere;
     }
 
     .btn-copy-action {
@@ -2411,6 +3235,11 @@
       font-size: 0.92rem;
       outline: none;
       transition: all 0.25s ease;
+    }
+
+    ::placeholder {
+      color: var(--text-subtle);
+      opacity: 0.85;
     }
 
     .form-input:focus,
@@ -2668,7 +3497,7 @@
       font-size: 1.15rem;
     }
 
-/* =========================================================
+    /* =========================================================
        PREMIUM 3D SCROLL & MOTION ENGINE
     ========================================================= */
     /* Safe Default: 100% visible if JS / 3D transforms unsupported */
@@ -2700,8 +3529,8 @@
       transform: perspective(1200px) rotateX(9deg) translateY(32px) translateZ(-24px);
       transform-origin: center bottom;
       transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.75s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
 
@@ -2719,7 +3548,7 @@
     .reveal-ready .reveal-3d-scale {
       transform: perspective(1200px) scale3d(0.92, 0.92, 0.92) translateZ(-45px) rotateX(6deg);
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .reveal-ready .reveal-left,
@@ -2747,33 +3576,89 @@
       transform: perspective(1200px) rotateX(-7deg) translateY(-28px) translateZ(-20px);
       transform-origin: center top;
     }
+
     body[data-scroll-direction="up"] .reveal-ready .reveal-scale:not(.visible),
     body[data-scroll-direction="up"] .reveal-ready .reveal-3d-scale:not(.visible) {
       transform: perspective(1200px) scale3d(0.92, 0.92, 0.92) translateZ(-40px) rotateX(-5deg);
     }
 
     /* Precision Stagger Delays */
-    .reveal-delay-1 { transition-delay: 0.08s; }
-    .reveal-delay-2 { transition-delay: 0.16s; }
-    .reveal-delay-3 { transition-delay: 0.24s; }
-    .reveal-delay-4 { transition-delay: 0.32s; }
-    .reveal-delay-5 { transition-delay: 0.40s; }
-    .reveal-delay-6 { transition-delay: 0.48s; }
+    .reveal-delay-1 {
+      transition-delay: 0.08s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.16s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.24s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: 0.32s;
+    }
+
+    .reveal-delay-5 {
+      transition-delay: 0.40s;
+    }
+
+    .reveal-delay-6 {
+      transition-delay: 0.48s;
+    }
 
     /* Automatic Stagger Grid Helper */
-    .reveal-ready .stagger-grid > .reveal:nth-child(1) { transition-delay: 0.04s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(2) { transition-delay: 0.10s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(3) { transition-delay: 0.16s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(4) { transition-delay: 0.22s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(5) { transition-delay: 0.28s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(6) { transition-delay: 0.34s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(7) { transition-delay: 0.40s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(8) { transition-delay: 0.46s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(9) { transition-delay: 0.52s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(10) { transition-delay: 0.58s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(11) { transition-delay: 0.64s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(12) { transition-delay: 0.70s; }
-    .reveal-ready .stagger-grid > .reveal:nth-child(n+13) { transition-delay: 0.12s; }
+    .reveal-ready .stagger-grid>.reveal:nth-child(1) {
+      transition-delay: 0.04s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(2) {
+      transition-delay: 0.10s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(3) {
+      transition-delay: 0.16s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(4) {
+      transition-delay: 0.22s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(5) {
+      transition-delay: 0.28s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(6) {
+      transition-delay: 0.34s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(7) {
+      transition-delay: 0.40s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(8) {
+      transition-delay: 0.46s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(9) {
+      transition-delay: 0.52s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(10) {
+      transition-delay: 0.58s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(11) {
+      transition-delay: 0.64s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(12) {
+      transition-delay: 0.70s;
+    }
+
+    .reveal-ready .stagger-grid>.reveal:nth-child(n+13) {
+      transition-delay: 0.12s;
+    }
 
     /* Hero Initial Load Entrance Animation */
     .reveal-ready .navbar {
@@ -2807,12 +3692,15 @@
     .reveal-ready .hero-metrics .metric-item:nth-child(1) {
       animation: hero3DFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.58s both;
     }
+
     .reveal-ready .hero-metrics .metric-item:nth-child(2) {
       animation: hero3DFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.64s both;
     }
+
     .reveal-ready .hero-metrics .metric-item:nth-child(3) {
       animation: hero3DFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.70s both;
     }
+
     .reveal-ready .hero-metrics .metric-item:nth-child(4) {
       animation: hero3DFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.76s both;
     }
@@ -2822,8 +3710,15 @@
     }
 
     @keyframes navEntrance {
-      0% { opacity: 0; transform: translateY(-16px); }
-      100% { opacity: 1; transform: translateY(0); }
+      0% {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes hero3DFadeUp {
@@ -2831,6 +3726,7 @@
         opacity: 0;
         transform: perspective(1000px) rotateX(10deg) translateY(24px) translateZ(-20px);
       }
+
       100% {
         opacity: 1;
         transform: perspective(1000px) rotateX(0deg) translateY(0) translateZ(0);
@@ -2842,6 +3738,7 @@
         opacity: 0;
         transform: perspective(1000px) rotateY(-8deg) rotateX(6deg) translateY(24px) translateZ(-60px) scale3d(0.92, 0.92, 0.92);
       }
+
       100% {
         opacity: 1;
         transform: perspective(1000px) rotateY(-4deg) rotateX(2deg) translateY(0) translateZ(0) scale3d(1, 1, 1);
@@ -2860,12 +3757,13 @@
     .contact-form-card {
       transform-style: preserve-3d;
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                  border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* Subtle Interactive 3D Hover & Elevation on Desktop */
     @media (hover: hover) and (pointer: fine) {
+
       .project-card:hover,
       .square-video-card:hover,
       .vertical-video-card:hover,
@@ -2909,8 +3807,8 @@
 
     .video-play-btn {
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                  background-color 0.3s ease,
-                  box-shadow 0.3s ease;
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
     }
 
     .video-play-btn:hover {
@@ -2924,19 +3822,31 @@
         animation-timeline: view();
         animation-range: entry 0% exit 100%;
       }
+
       @keyframes watermarkScroll {
-        0% { transform: translateY(-20px); }
-        100% { transform: translateY(50px); }
+        0% {
+          transform: translateY(-20px);
+        }
+
+        100% {
+          transform: translateY(50px);
+        }
       }
-      
+
       .hero-glow-1 {
         animation: glowScroll1 linear both;
         animation-timeline: view();
         animation-range: entry 0% exit 100%;
       }
+
       @keyframes glowScroll1 {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(40px); }
+        0% {
+          transform: translateY(0);
+        }
+
+        100% {
+          transform: translateY(40px);
+        }
       }
     }
 
@@ -2992,14 +3902,22 @@
 
     /* Mobile Responsive 3D Adaptation */
     @media (max-width: 768px) {
-      .reveal-ready .reveal,
-      .reveal-ready .reveal-up,
-      .reveal-ready .reveal-left,
-      .reveal-ready .reveal-right {
-        transform: translateY(22px) !important;
+
+      .reveal-ready .reveal:not(.visible),
+      .reveal-ready .reveal-up:not(.visible),
+      .reveal-ready .reveal-left:not(.visible),
+      .reveal-ready .reveal-right:not(.visible) {
+        transform: translateY(20px) !important;
         perspective: none !important;
       }
-      
+
+      .reveal-ready .reveal.visible,
+      .reveal-ready .revealed {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        perspective: none !important;
+      }
+
       .hero-card-frame {
         transform: none !important;
       }
@@ -3008,13 +3926,17 @@
       .square-video-card:hover,
       .vertical-video-card:hover,
       .poster-item-card:hover,
-      .experience-card:hover {
+      .experience-card:hover,
+      .skill-card:hover,
+      .process-card:hover,
+      .contact-method-card:hover {
         transform: none !important;
       }
     }
 
     /* Accessibility Safeguards: Prefers Reduced Motion */
     @media (prefers-reduced-motion: reduce) {
+
       *,
       *::before,
       *::after {
@@ -3045,141 +3967,433 @@
       }
     }
 
+    /* Touch Device Optimization: Accessible Touch Targets & No-Hover States */
+    @media (hover: none) and (pointer: coarse) {
+      .poster-hover-zoom {
+        opacity: 0.85;
+      }
 
-    /* Responsive */
-    @media (max-width: 1100px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 50px;
-      }
-      .hero-card-wrapper {
-        max-width: 460px;
-        margin-inline: auto;
-      }
-      .about-grid {
-        grid-template-columns: 1fr;
-        gap: 50px;
-      }
-      .skills-layout {
-        grid-template-columns: 1fr;
-        gap: 26px;
-      }
-      .projects-grid {
-        grid-template-columns: 1fr;
-        max-width: 650px;
-        margin-inline: auto;
-      }
-      .grid-square-videos {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .grid-vertical-videos {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .poster-gallery-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .process-steps {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .photo-grid-view {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 50px;
+      .photo-grid-overlay {
+        opacity: 1;
+        background: linear-gradient(180deg, transparent 40%, rgba(5, 8, 6, 0.9) 100%);
       }
     }
 
+    /* Responsive Breakpoints System: 1240px, 1100px, 1024px, 820px, 768px, 600px, 480px, 360px */
     @media (max-width: 1240px) {
       .nav-links {
         gap: 16px;
       }
+
       .nav-links a {
         font-size: 0.81rem;
       }
+
       .brand-subtitle {
         display: none;
       }
+
       .nav-actions .btn-outline {
         padding: 8px 14px;
         font-size: 0.78rem;
       }
     }
 
+    @media (max-width: 1100px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+
+      .hero-card-wrapper {
+        max-width: min(460px, 100%);
+        margin-inline: auto;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+
+      .skills-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .skill-card-toolkit {
+        grid-column: 1;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 30px 24px;
+      }
+
+      .skill-card-toolkit .tools-modern-grid {
+        grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+        max-width: min(650px, 100%);
+        margin-inline: auto;
+      }
+
+      .grid-square-videos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-vertical-videos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .poster-gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .process-steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .photo-grid-view {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+    }
+
     @media (max-width: 1024px) {
+
       .nav-links,
       .nav-actions .btn-outline {
         display: none;
       }
+
       .menu-button {
         display: flex;
       }
+
       .experience-grid {
         grid-template-columns: 1fr;
       }
+
       .bts-grid {
         grid-template-columns: 1fr;
       }
+
       .grid-vertical-videos {
         grid-template-columns: 1fr;
-        max-width: 380px;
+        max-width: min(380px, 100%);
         margin-inline: auto;
       }
+
       .poster-gallery-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
       .photo-stack-container {
         grid-template-columns: 1fr;
         gap: 30px;
       }
+
       .photo-stack-stage {
-        height: 400px;
+        height: auto;
+        min-height: 380px;
+        padding: 16px 0;
       }
+
       .hero-metrics {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
+    @media (max-width: 820px) {
+      .hero-watermark {
+        display: none;
+      }
+
+      .poster-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .ambassador-spotlight {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: clamp(20px, 5vw, 36px);
+        gap: 28px;
+      }
+
+      .ambassador-player-frame {
+        width: 100%;
+        max-width: min(300px, 100%);
+        margin: 0 auto;
+      }
+
+      .ambassador-badges,
+      .ambassador-org {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      section {
+        padding-block: clamp(65px, 11vw, 95px);
+      }
+
+      .hero {
+        padding: calc(var(--nav-height) + 24px) 0 60px;
+      }
+
+      .btn-video-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 0.95rem;
+      }
+
+      .video-corner-ctrls {
+        bottom: 10px;
+        right: 10px;
+        gap: 8px;
+      }
+    }
+
     @media (max-width: 600px) {
       :root {
-        --nav-height: 68px;
+        --nav-height: 66px;
       }
+
       .hero-h1 {
-        font-size: 2.5rem;
+        font-size: clamp(2rem, 7.5vw, 2.5rem);
+        line-height: 1.1;
+        margin-bottom: 16px;
       }
+
       .section-title {
-        font-size: 2.1rem;
+        font-size: clamp(1.8rem, 6.5vw, 2.25rem);
+        line-height: 1.15;
       }
+
+      .hero-description {
+        font-size: clamp(0.92rem, 3.8vw, 1.05rem);
+        line-height: 1.65;
+        margin-bottom: 24px;
+      }
+
       .dual-pillars {
         grid-template-columns: 1fr;
+        gap: 16px;
       }
+
       .grid-square-videos {
         grid-template-columns: 1fr;
+        max-width: min(380px, 100%);
+        margin-inline: auto;
       }
-      .poster-gallery-grid {
-        grid-template-columns: 1fr;
-      }
+
       .process-steps {
         grid-template-columns: 1fr;
+        gap: 16px;
       }
+
       .photo-grid-view {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
+
       .tools-modern-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
       }
+
       .contact-form-card {
-        padding: 24px 20px;
+        padding: 22px 18px;
       }
+
       .footer-inner {
         flex-direction: column;
         text-align: center;
+        gap: 16px;
+      }
+
+      /* Horizontal Scrollable Filter Tabs on Mobile */
+      .filter-tabs {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 8px;
+        padding: 4px 4px 12px;
+        justify-content: flex-start;
+        max-width: 100%;
+      }
+
+      .filter-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .filter-tab,
+      .photo-filter {
+        flex-shrink: 0;
+        white-space: nowrap;
+        min-height: 44px;
+        padding: 8px 16px;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      /* Modals on small screens */
+      .modal-backdrop {
+        padding: 10px;
+      }
+
+      .modal-container {
+        width: 100%;
+        max-height: 96vh;
+        max-height: 96dvh;
+        border-radius: var(--radius-lg);
+      }
+
+      .modal-close-btn {
+        width: 44px;
+        height: 44px;
+        top: 8px;
+        right: 8px;
+        font-size: 1.25rem;
+      }
+
+      .modal-info-bar {
+        padding: 12px 14px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .image-lightbox-container img {
+        max-width: 95vw;
+        max-height: 72vh;
+        max-height: 72dvh;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+        text-align: center;
+        min-height: 48px;
+      }
+
+      .hero-signature-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding-top: 18px;
+      }
+
+      .hero-signature-text {
+        font-size: clamp(2.2rem, 7.5vw, 2.9rem);
+      }
+
+      .hero-metrics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 14px 16px;
+        margin-top: 20px;
+      }
+
+      .experience-card {
+        padding: 20px 16px;
+      }
+
+      .exp-top-row {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .exp-title {
+        font-size: 1.15rem;
+      }
+
+      .poster-gallery-grid {
+        grid-template-columns: 1fr;
+        max-width: min(340px, 100%);
+        margin-inline: auto;
+      }
+
+      .contact-method-card {
+        flex-wrap: wrap;
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .contact-method-card .btn-copy-action {
+        width: 100%;
+        text-align: center;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stack-nav-ctrls {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .btn-stack-ctrl {
+        flex: 1 1 calc(50% - 8px);
+        justify-content: center;
+        min-height: 44px;
+        font-size: 0.78rem;
+        padding: 8px 12px;
+      }
+
+      #btnInspectCurrent {
+        flex: 1 1 100%;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .hero-metrics {
+        gap: 8px;
+        padding: 10px 12px;
+      }
+
+      .metric-value {
+        font-size: 1.12rem;
+      }
+
+      .metric-label {
+        font-size: 0.64rem;
+      }
+
+      .contact-form-card {
+        padding: 18px 12px;
+      }
+
+      .form-input,
+      .form-select,
+      .form-textarea {
+        padding: 10px 12px;
+        font-size: 0.88rem;
       }
     }
   </style>
 </head>
 
 <body>
+  <!-- Light Mode Ambient Glow Layer for Ultra-Smooth Cross-Fade -->
+  <div class="ambient-glow-light" id="ambientGlowLight" aria-hidden="true"></div>
 
   <!-- =======================================================
        1. NAVIGATION HEADER
@@ -3188,7 +4402,7 @@
     <div class="container nav-inner">
       <a class="brand-mark" href="#top" aria-label="Nazarhene Yee Home">
         <span class="logo">NAZARHENE<span>.</span></span>
-        <span class="brand-subtitle">Creative & Operations</span>
+
       </a>
 
       <nav class="nav-links" aria-label="Main Navigation">
@@ -3204,6 +4418,25 @@
       </nav>
 
       <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch between light and dark theme"
+          title="Toggle theme">
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
         <a href="#contact" class="btn btn-outline btn-sm">Let's Connect ↗</a>
         <button class="menu-button" id="menuButton" aria-label="Toggle navigation menu" aria-expanded="false">
           <div class="menu-icon">
@@ -3217,6 +4450,28 @@
 
     <!-- Mobile Navigation Drawer -->
     <nav class="mobile-nav" id="mobileNav" aria-label="Mobile Navigation">
+      <div class="mobile-nav-theme-row">
+        <span class="mobile-theme-label">Appearance</span>
+        <button class="theme-toggle-mobile" id="themeToggleMobile" type="button" aria-label="Switch theme">
+          <span class="mobile-theme-text">Dark Mode</span>
+          <span class="mobile-theme-icon-wrap" aria-hidden="true">
+            <svg class="theme-icon-mini-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="theme-icon-mini-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </span>
+        </button>
+      </div>
       <a href="#about">About <span>→</span></a>
       <a href="#experience">Experience <span>→</span></a>
       <a href="#films">Short Films <span>→</span></a>
@@ -3247,21 +4502,23 @@
             Open for Creative Directing, AI Media & VA Roles
           </div>
 
-          <div class="eyebrow reveal reveal-delay-1">Film Director · AI Content Creator · Marketing & Admin Lead</div>
-
           <h1 class="hero-h1 reveal reveal-delay-2">
             Where Cinematic Vision<br>
             Meets <span class="editorial-italic">Operational Precision.</span>
           </h1>
 
           <p class="hero-description reveal reveal-delay-3">
-            I am <strong>Ma. Nazarhene Nichola S. Yee</strong> — an award-winning film director, AI-assisted video creator, and visual designer paired with rigorous marketing and executive administrative experience. Bringing narrative impact, brand visibility, and systematic order to every project.
+            I am <strong>Ma. Nazarhene Nichola S. Yee</strong> — an award-winning film director, AI-assisted video
+            creator, and visual designer paired with rigorous marketing and executive administrative experience.
+            Bringing narrative impact, brand visibility, and systematic order to every project.
           </p>
 
           <div class="hero-actions reveal reveal-delay-4">
             <a class="btn btn-primary" href="#films">
               Explore Short Films
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </a>
             <a class="btn btn-outline" href="#commercials">
               AI & Commercials ↓
@@ -3304,14 +4561,19 @@
         <div class="hero-card-wrapper reveal">
           <div class="hero-card-frame">
             <div class="hero-card-inner">
-              <img class="hero-photo" src="images/landing.jpg" alt="Portrait of Ma. Nazarhene Nichola S. Yee" width="600" height="750">
+              <img class="hero-photo" src="images/landing.jpg" alt="Portrait of Ma. Nazarhene Nichola S. Yee"
+                width="600" height="750">
               <div class="hero-card-overlay"></div>
               <div class="hero-card-details">
                 <div class="badge-award badge-champ" style="margin-bottom: 8px;">Creative & Executive Lead</div>
                 <h2 class="hero-card-name">Ma. Nazarhene Nichola S. Yee</h2>
-                <p class="hero-card-role">Film Director · AI Creator · Social Media Manager · VA Specialist</p>
+                <p class="hero-card-role">Video Editor · Photo Editor · AI Creator · Social Media Manager · VA
+                  Specialist</p>
                 <div class="hero-card-location">
-                  <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                  </svg>
                   Bago City, Negros Occidental, Philippines
                 </div>
               </div>
@@ -3332,18 +4594,23 @@
             <h2 class="section-title reveal">Bridging <span>Narrative Art</span> & Executive Rigor.</h2>
 
             <p class="about-lead-paragraph reveal">
-              Multidisciplinary Creative, Marketing, and Administrative professional with hands-on expertise spanning AI-assisted media production, commercial brand campaigns, film direction, and executive office operations.
+              Multidisciplinary Creative, Marketing, and Administrative professional with hands-on expertise spanning
+              AI-assisted media production, commercial brand campaigns, film direction, and executive office operations.
             </p>
 
             <p class="about-body-text reveal">
-              Whether directing award-winning short films, designing high-conversion restaurant marketing posters, crafting AI-generated product advertisements for national brands, or managing high-volume client and administrative workflows, my approach remains focused: <strong>delivering organized, high-quality, and meaningful visual communication.</strong>
+              Whether directing award-winning short films, designing high-conversion restaurant marketing posters,
+              crafting AI-generated product advertisements for national brands, or managing high-volume client and
+              administrative workflows, my approach remains focused: <strong>delivering organized, high-quality, and
+                meaningful visual communication.</strong>
             </p>
 
             <div class="dual-pillars reveal">
               <div class="pillar-card reveal reveal-3d-left">
                 <div class="pillar-icon">🎬</div>
                 <h3>Creative Direction & AI Media</h3>
-                <p>Short film direction, cinematography, video editing (Premiere & DaVinci), AI product video production, commercial visualization, and graphic branding.</p>
+                <p>Short film direction, cinematography, video editing (Premiere & DaVinci), AI product video
+                  production, commercial visualization, and graphic branding.</p>
                 <div class="pillar-tags">
                   <span class="pillar-tag">Directing</span>
                   <span class="pillar-tag">AI Video</span>
@@ -3356,7 +4623,8 @@
               <div class="pillar-card reveal reveal-3d-right">
                 <div class="pillar-icon">📋</div>
                 <h3>Virtual Assistance & Operations</h3>
-                <p>Social media management, client coordination, office administration, HR record management, document encoding, and executive remote support.</p>
+                <p>Social media management, client coordination, office administration, HR record management, document
+                  encoding, and executive remote support.</p>
                 <div class="pillar-tags">
                   <span class="pillar-tag">Executive VA</span>
                   <span class="pillar-tag">Social Media Mgmt</span>
@@ -3417,7 +4685,8 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Career Milestones & Roles</div>
           <h2 class="section-title">Track Record & <span>Professional Experience</span></h2>
-          <p class="section-subtitle">Real-world experience spanning AI-assisted creative production, social media management, commercial operations, healthcare marketing, and award-winning film directing.</p>
+          <p class="section-subtitle">Real-world experience spanning AI-assisted creative production, social media
+            management, commercial operations, healthcare marketing, and award-winning film directing.</p>
         </div>
 
         <!-- Filter Controls -->
@@ -3440,7 +4709,9 @@
             <h3 class="exp-title">AI-First Content Creator</h3>
             <div class="exp-company">Careers Emphoria / Laudate Mariam</div>
             <p class="exp-desc">
-              Create AI-assisted digital content and marketing visuals, including product-focused creative assets, video content, and promotional materials. Support creative production workflows for Careers Emphoria and Laudate Mariam.
+              Create AI-assisted digital content and marketing visuals, including product-focused creative assets, video
+              content, and promotional materials. Support creative production workflows for Careers Emphoria and Laudate
+              Mariam.
             </p>
             <ul class="exp-bullets">
               <li>Produced commercial AI product showcase videos for e-commerce catalog.</li>
@@ -3461,7 +4732,8 @@
             <h3 class="exp-title">Social Media Manager</h3>
             <div class="exp-company">Blessie Food Hub / INBOX</div>
             <p class="exp-desc">
-              Manage social media content and promotional materials for Blessie Food Hub and INBOX, supporting brand visibility, marketing campaigns, promotional announcements, and audience engagement.
+              Manage social media content and promotional materials for Blessie Food Hub and INBOX, supporting brand
+              visibility, marketing campaigns, promotional announcements, and audience engagement.
             </p>
             <ul class="exp-bullets">
               <li>Designed 15+ high-impact promotional posters, menu pubmats, and special event announcements.</li>
@@ -3482,7 +4754,9 @@
             <h3 class="exp-title">Head of Marketing & Administration</h3>
             <div class="exp-company">GBLESS Trading OPC · Bago City, PH</div>
             <p class="exp-desc">
-              Led marketing and administrative operations, overseeing promotional campaigns, social media, employee records, attendance, payroll support, documentation, client/supplier coordination, and daily business operations.
+              Led marketing and administrative operations, overseeing promotional campaigns, social media, employee
+              records, attendance, payroll support, documentation, client/supplier coordination, and daily business
+              operations.
             </p>
             <ul class="exp-bullets">
               <li>Created promotional videos, posters, photography, and digital campaigns.</li>
@@ -3500,7 +4774,8 @@
             <h3 class="exp-title">Film Director & Videographer</h3>
             <div class="exp-company">KAHEL & SUGA · Bago City College</div>
             <p class="exp-desc">
-              Led creative direction of KAHEL and co-directed SUGA, overseeing concept development, production planning, videography, editing, and post-production. KAHEL received Champion / Best Film recognition.
+              Led creative direction of KAHEL and co-directed SUGA, overseeing concept development, production planning,
+              videography, editing, and post-production. KAHEL received Champion / Best Film recognition.
             </p>
             <ul class="exp-bullets">
               <li>Captured and refined footage through composition, pacing, transitions, and score.</li>
@@ -3521,7 +4796,8 @@
             <h3 class="exp-title">Virtual Assistant</h3>
             <div class="exp-company">Remote Client Services & Administrative Support</div>
             <p class="exp-desc">
-              Providing structured remote administrative support, schedule coordination, client communication, document encoding, digital spreadsheet tracking, and modern workflow organization.
+              Providing structured remote administrative support, schedule coordination, client communication, document
+              encoding, digital spreadsheet tracking, and modern workflow organization.
             </p>
             <ul class="exp-bullets">
               <li>Executive calendar, meeting logistics, and correspondence management.</li>
@@ -3539,7 +4815,8 @@
             <h3 class="exp-title">Marketing & Human Resource Intern</h3>
             <div class="exp-company">South Bacolod General Hospital · Bacolod City, PH</div>
             <p class="exp-desc">
-              Supported hospital marketing campaigns and awareness programs by designing promotional materials using Canva, preparing reports and administrative documents, and assisting with HR documentation.
+              Supported hospital marketing campaigns and awareness programs by designing promotional materials using
+              Canva, preparing reports and administrative documents, and assisting with HR documentation.
             </p>
             <ul class="exp-bullets">
               <li>Designed promotional materials for health initiatives and hospital announcements.</li>
@@ -3557,7 +4834,8 @@
             <h3 class="exp-title">Administrative Intern — E-Center</h3>
             <div class="exp-company">Social Security System (SSS) · Bago City, PH</div>
             <p class="exp-desc">
-              Assisted clients with SSS online services and account registration, guided members through the E-Center kiosks and online portal, verified and organized records, and encoded member information.
+              Assisted clients with SSS online services and account registration, guided members through the E-Center
+              kiosks and online portal, verified and organized records, and encoded member information.
             </p>
             <ul class="exp-bullets">
               <li>Direct client assistance across public self-service digital kiosks.</li>
@@ -3575,7 +4853,8 @@
             <h3 class="exp-title">Freelance Photographer & Creative Specialist</h3>
             <div class="exp-company">Self-Employed · Bacolod City & Bago City, PH</div>
             <p class="exp-desc">
-              Provided photography and videography services for events, portraits, and creative projects, while editing photos and videos for clients and social media use. Designed posters, pubmats, and graphics.
+              Provided photography and videography services for events, portraits, and creative projects, while editing
+              photos and videos for clients and social media use. Designed posters, pubmats, and graphics.
             </p>
             <ul class="exp-bullets">
               <li>Managed client requirements, shoot schedules, and creative deliverables.</li>
@@ -3593,7 +4872,8 @@
             <h3 class="exp-title">Documentation Committee Lead</h3>
             <div class="exp-company">Student Supreme Government · Bago City College</div>
             <p class="exp-desc">
-              Documented official school events, programs, and student activities through photography and videography for organizational records and promotional use. Collaborated with committee in planning event coverage.
+              Documented official school events, programs, and student activities through photography and videography
+              for organizational records and promotional use. Collaborated with committee in planning event coverage.
             </p>
             <ul class="exp-bullets">
               <li>Orchestrated live event photo and video coverage for student leadership body.</li>
@@ -3611,7 +4891,9 @@
             <h3 class="exp-title">Senior Photojournalist & Entertainment Editor</h3>
             <div class="exp-company">The Courier · Bago City College</div>
             <p class="exp-desc">
-              Produced visual stories through photography and event coverage while developing entertainment content as Entertainment Editor. Collaborated with writers, editors, and contributors to coordinate assignments and meet press deadlines.
+              Produced visual stories through photography and event coverage while developing entertainment content as
+              Entertainment Editor. Collaborated with writers, editors, and contributors to coordinate assignments and
+              meet press deadlines.
             </p>
             <ul class="exp-bullets">
               <li>Authored cultural, arts, and entertainment editorial features.</li>
@@ -3632,7 +4914,8 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Original Cinema</div>
           <h2 class="section-title">Selected <span>Short Films</span></h2>
-          <p class="section-subtitle">Original narrative short films highlighting creative direction, composition, atmospheric lighting, score pacing, and post-production polish.</p>
+          <p class="section-subtitle">Original narrative short films highlighting creative direction, composition,
+            atmospheric lighting, score pacing, and post-production polish.</p>
         </div>
 
         <div class="projects-grid stagger-grid">
@@ -3640,17 +4923,22 @@
           <!-- PROJECT 1: KAHEL -->
           <article class="project-card reveal">
             <div class="video-viewport">
-              <video class="portfolio-video" muted loop playsinline preload="metadata" poster="posters/kahel.jpg" aria-label="KAHEL Film Preview">
+              <video class="portfolio-video" muted loop playsinline preload="metadata" poster="posters/kahel.jpg"
+                aria-label="KAHEL Film Preview">
                 <source src="videos/kahel.mp4" type="video/mp4">
               </video>
               <div class="video-overlay-ctrls">
                 <button class="video-play-btn" data-action="toggle-play" aria-label="Play KAHEL film video">
-                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </button>
               </div>
               <div class="video-corner-ctrls">
-                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                <button class="btn-video-icon btn-expand" data-video="videos/kahel.mp4" data-title="KAHEL" data-desc="Champion / Best Film — Directed, Videography & Edited by Nazarhene Yee" aria-label="Cinema Fullscreen">⛶</button>
+                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔇</button>
+                <button class="btn-video-icon btn-expand" data-video="videos/kahel.mp4" data-title="KAHEL"
+                  data-desc="Champion / Best Film — Directed, Videography & Edited by Nazarhene Yee"
+                  aria-label="Cinema Fullscreen">⛶</button>
               </div>
             </div>
 
@@ -3661,13 +4949,16 @@
               </div>
               <h3 class="project-title">
                 KAHEL
-                <span style="font-size: 0.85rem; color: var(--bronze-bright); font-family: var(--font-sans); font-weight: 600;">2024–2026</span>
+                <span
+                  style="font-size: 0.85rem; color: var(--bronze-bright); font-family: var(--font-sans); font-weight: 600;">2024–2026</span>
               </h3>
               <p class="project-desc">
-                Creative direction, production, videography, editing, and post-production. Awarded Champion / Best Film distinction for nuanced storytelling, lighting, and pacing.
+                Creative direction, production, videography, editing, and post-production. Awarded Champion / Best Film
+                distinction for nuanced storytelling, lighting, and pacing.
               </p>
               <div class="project-actions">
-                <button class="btn-watch-cinema" data-video="videos/kahel.mp4" data-title="KAHEL" data-desc="Champion / Best Film — Creative Direction, Production, Videography & Editing">
+                <button class="btn-watch-cinema" data-video="videos/kahel.mp4" data-title="KAHEL"
+                  data-desc="Champion / Best Film — Creative Direction, Production, Videography & Editing">
                   Watch in Cinema Mode →
                 </button>
                 <span style="font-size: 0.75rem; color: var(--text-muted);">1080p Cinema</span>
@@ -3678,17 +4969,22 @@
           <!-- PROJECT 2: SUGA -->
           <article class="project-card reveal reveal-delay-1">
             <div class="video-viewport">
-              <video class="portfolio-video" muted loop playsinline preload="metadata" poster="posters/suga.jpg" aria-label="SUGA Film Preview">
+              <video class="portfolio-video" muted loop playsinline preload="metadata" poster="posters/suga.jpg"
+                aria-label="SUGA Film Preview">
                 <source src="videos/suga.mp4" type="video/mp4">
               </video>
               <div class="video-overlay-ctrls">
                 <button class="video-play-btn" data-action="toggle-play" aria-label="Play SUGA film video">
-                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </button>
               </div>
               <div class="video-corner-ctrls">
-                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                <button class="btn-video-icon btn-expand" data-video="videos/suga.mp4" data-title="SUGA" data-desc="Champion Film — Co-Directed & Edited by Nazarhene Yee" aria-label="Cinema Fullscreen">⛶</button>
+                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔇</button>
+                <button class="btn-video-icon btn-expand" data-video="videos/suga.mp4" data-title="SUGA"
+                  data-desc="Champion Film — Co-Directed & Edited by Nazarhene Yee"
+                  aria-label="Cinema Fullscreen">⛶</button>
               </div>
             </div>
 
@@ -3699,13 +4995,16 @@
               </div>
               <h3 class="project-title">
                 SUGA
-                <span style="font-size: 0.85rem; color: var(--bronze-bright); font-family: var(--font-sans); font-weight: 600;">2024–2026</span>
+                <span
+                  style="font-size: 0.85rem; color: var(--bronze-bright); font-family: var(--font-sans); font-weight: 600;">2024–2026</span>
               </h3>
               <p class="project-desc">
-                Co-directed and contributed to cinematography, visual storytelling, editing, and production. Recognized as a Champion production for striking visual impact.
+                Co-directed and contributed to cinematography, visual storytelling, editing, and production. Recognized
+                as a Champion production for striking visual impact.
               </p>
               <div class="project-actions">
-                <button class="btn-watch-cinema" data-video="videos/suga.mp4" data-title="SUGA" data-desc="Champion Film — Co-Directed, Cinematography, Visual Storytelling & Editing">
+                <button class="btn-watch-cinema" data-video="videos/suga.mp4" data-title="SUGA"
+                  data-desc="Champion Film — Co-Directed, Cinematography, Visual Storytelling & Editing">
                   Watch in Cinema Mode →
                 </button>
                 <span style="font-size: 0.75rem; color: var(--text-muted);">HD Stereo</span>
@@ -3716,17 +5015,22 @@
           <!-- PROJECT 3: BETWEEN DEADLINES -->
           <article class="project-card reveal reveal-delay-2">
             <div class="video-viewport">
-              <video class="portfolio-video" muted loop playsinline preload="metadata" poster="posters/between-deadlines.jpg" aria-label="Between Deadlines Film Preview">
+              <video class="portfolio-video" muted loop playsinline preload="metadata"
+                poster="posters/between-deadlines.jpg" aria-label="Between Deadlines Film Preview">
                 <source src="videos/between deadline.mp4" type="video/mp4">
               </video>
               <div class="video-overlay-ctrls">
                 <button class="video-play-btn" data-action="toggle-play" aria-label="Play Between Deadlines video">
-                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </button>
               </div>
               <div class="video-corner-ctrls">
-                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                <button class="btn-video-icon btn-expand" data-video="videos/between deadline.mp4" data-title="Between Deadlines" data-desc="1st Runner Up — Directed, Written & Edited by Nazarhene Yee" aria-label="Cinema Fullscreen">⛶</button>
+                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔇</button>
+                <button class="btn-video-icon btn-expand" data-video="videos/between deadline.mp4"
+                  data-title="Between Deadlines" data-desc="1st Runner Up — Directed, Written & Edited by Nazarhene Yee"
+                  aria-label="Cinema Fullscreen">⛶</button>
               </div>
             </div>
 
@@ -3737,13 +5041,16 @@
               </div>
               <h3 class="project-title">
                 Between Deadlines
-                <span style="font-size: 0.85rem; color: var(--bronze-bright); font-family: var(--font-sans); font-weight: 600;">2025</span>
+                <span
+                  style="font-size: 0.85rem; color: var(--bronze-bright); font-family: var(--font-sans); font-weight: 600;">2025</span>
               </h3>
               <p class="project-desc">
-                Director, editor, writer, and music director. An exploration of creative pressure and time management awarded 1st Runner Up recognition.
+                Director, editor, writer, and music director. An exploration of creative pressure and time management
+                awarded 1st Runner Up recognition.
               </p>
               <div class="project-actions">
-                <button class="btn-watch-cinema" data-video="videos/between deadline.mp4" data-title="Between Deadlines" data-desc="1st Runner Up — Director, Writer, Music Director & Post-Production Editor">
+                <button class="btn-watch-cinema" data-video="videos/between deadline.mp4" data-title="Between Deadlines"
+                  data-desc="1st Runner Up — Director, Writer, Music Director & Post-Production Editor">
                   Watch in Cinema Mode →
                 </button>
                 <span style="font-size: 0.75rem; color: var(--text-muted);">Original Score</span>
@@ -3763,7 +5070,8 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Product & Commercial Visualization</div>
           <h2 class="section-title">AI Video & <span>Commercial Edits</span></h2>
-          <p class="section-subtitle">Commercial video campaigns created through generative AI workflows, product advertising visualizations, and dynamic commercial edits.</p>
+          <p class="section-subtitle">Commercial video campaigns created through generative AI workflows, product
+            advertising visualizations, and dynamic commercial edits.</p>
         </div>
 
         <!-- Group A: Laudate Mariam AI Product Videos (4 videos, 1:1 Square) -->
@@ -3781,92 +5089,132 @@
             <!-- Video 1 -->
             <article class="square-video-card reveal">
               <div class="square-viewport">
-                <video class="portfolio-video" muted loop playsinline preload="metadata" aria-label="Laudate Mariam AI Product Video 1">
+                <video class="portfolio-video" muted loop playsinline preload="metadata"
+                  aria-label="Laudate Mariam AI Product Video 1">
                   <source src="videos/LAUDATE MARIAM AI Product Videos/3 (1).mp4" type="video/mp4">
                 </video>
                 <div class="video-overlay-ctrls">
                   <button class="video-play-btn" data-action="toggle-play" aria-label="Play Laudate Mariam Reel 1">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </button>
                 </div>
                 <div class="video-corner-ctrls">
-                  <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                  <button class="btn-video-icon btn-expand" data-video="videos/LAUDATE MARIAM AI Product Videos/3 (1).mp4" data-title="Laudate Mariam — Product Reel 01" data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam" aria-label="Cinema Fullscreen">⛶</button>
+                  <button class="btn-video-icon btn-sound" data-action="toggle-sound"
+                    aria-label="Toggle mute">🔇</button>
+                  <button class="btn-video-icon btn-expand"
+                    data-video="videos/LAUDATE MARIAM AI Product Videos/3 (1).mp4"
+                    data-title="Laudate Mariam — Product Reel 01"
+                    data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam"
+                    aria-label="Cinema Fullscreen">⛶</button>
                 </div>
               </div>
               <div style="padding: 16px;">
                 <span class="badge-category">AI Product Reel · 1:1</span>
-                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">Laudate Mariam — Showcase 01</h4>
-                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">AI-generated lighting and product framing for devotional religious jewelry.</p>
+                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">
+                  Laudate Mariam — Showcase 01</h4>
+                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">AI-generated lighting and
+                  product framing for devotional religious jewelry.</p>
               </div>
             </article>
 
             <!-- Video 2 -->
             <article class="square-video-card reveal reveal-delay-1">
               <div class="square-viewport">
-                <video class="portfolio-video" muted loop playsinline preload="metadata" aria-label="Laudate Mariam AI Product Video 2">
+                <video class="portfolio-video" muted loop playsinline preload="metadata"
+                  aria-label="Laudate Mariam AI Product Video 2">
                   <source src="videos/LAUDATE MARIAM AI Product Videos/3 (2).mp4" type="video/mp4">
                 </video>
                 <div class="video-overlay-ctrls">
                   <button class="video-play-btn" data-action="toggle-play" aria-label="Play Laudate Mariam Reel 2">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </button>
                 </div>
                 <div class="video-corner-ctrls">
-                  <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                  <button class="btn-video-icon btn-expand" data-video="videos/LAUDATE MARIAM AI Product Videos/3 (2).mp4" data-title="Laudate Mariam — Product Reel 02" data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam" aria-label="Cinema Fullscreen">⛶</button>
+                  <button class="btn-video-icon btn-sound" data-action="toggle-sound"
+                    aria-label="Toggle mute">🔇</button>
+                  <button class="btn-video-icon btn-expand"
+                    data-video="videos/LAUDATE MARIAM AI Product Videos/3 (2).mp4"
+                    data-title="Laudate Mariam — Product Reel 02"
+                    data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam"
+                    aria-label="Cinema Fullscreen">⛶</button>
                 </div>
               </div>
               <div style="padding: 16px;">
                 <span class="badge-category">AI Product Reel · 1:1</span>
-                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">Laudate Mariam — Showcase 02</h4>
-                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">Macro product visualization focusing on sacred medals and chain textures.</p>
+                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">
+                  Laudate Mariam — Showcase 02</h4>
+                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">Macro product visualization
+                  focusing on sacred medals and chain textures.</p>
               </div>
             </article>
 
             <!-- Video 3 -->
             <article class="square-video-card reveal reveal-delay-2">
               <div class="square-viewport">
-                <video class="portfolio-video" muted loop playsinline preload="metadata" aria-label="Laudate Mariam AI Product Video 3">
+                <video class="portfolio-video" muted loop playsinline preload="metadata"
+                  aria-label="Laudate Mariam AI Product Video 3">
                   <source src="videos/LAUDATE MARIAM AI Product Videos/3 (3).mp4" type="video/mp4">
                 </video>
                 <div class="video-overlay-ctrls">
                   <button class="video-play-btn" data-action="toggle-play" aria-label="Play Laudate Mariam Reel 3">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </button>
                 </div>
                 <div class="video-corner-ctrls">
-                  <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                  <button class="btn-video-icon btn-expand" data-video="videos/LAUDATE MARIAM AI Product Videos/3 (3).mp4" data-title="Laudate Mariam — Product Reel 03" data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam" aria-label="Cinema Fullscreen">⛶</button>
+                  <button class="btn-video-icon btn-sound" data-action="toggle-sound"
+                    aria-label="Toggle mute">🔇</button>
+                  <button class="btn-video-icon btn-expand"
+                    data-video="videos/LAUDATE MARIAM AI Product Videos/3 (3).mp4"
+                    data-title="Laudate Mariam — Product Reel 03"
+                    data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam"
+                    aria-label="Cinema Fullscreen">⛶</button>
                 </div>
               </div>
               <div style="padding: 16px;">
                 <span class="badge-category">AI Product Reel · 1:1</span>
-                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">Laudate Mariam — Showcase 03</h4>
-                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">Dynamic reflective ambient motion highlights for e-commerce advertising.</p>
+                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">
+                  Laudate Mariam — Showcase 03</h4>
+                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">Dynamic reflective ambient
+                  motion highlights for e-commerce advertising.</p>
               </div>
             </article>
 
             <!-- Video 4 -->
             <article class="square-video-card reveal reveal-delay-3">
               <div class="square-viewport">
-                <video class="portfolio-video" muted loop playsinline preload="metadata" aria-label="Laudate Mariam AI Product Video 4">
+                <video class="portfolio-video" muted loop playsinline preload="metadata"
+                  aria-label="Laudate Mariam AI Product Video 4">
                   <source src="videos/LAUDATE MARIAM AI Product Videos/3 (4).mp4" type="video/mp4">
                 </video>
                 <div class="video-overlay-ctrls">
                   <button class="video-play-btn" data-action="toggle-play" aria-label="Play Laudate Mariam Reel 4">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </button>
                 </div>
                 <div class="video-corner-ctrls">
-                  <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                  <button class="btn-video-icon btn-expand" data-video="videos/LAUDATE MARIAM AI Product Videos/3 (4).mp4" data-title="Laudate Mariam — Product Reel 04" data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam" aria-label="Cinema Fullscreen">⛶</button>
+                  <button class="btn-video-icon btn-sound" data-action="toggle-sound"
+                    aria-label="Toggle mute">🔇</button>
+                  <button class="btn-video-icon btn-expand"
+                    data-video="videos/LAUDATE MARIAM AI Product Videos/3 (4).mp4"
+                    data-title="Laudate Mariam — Product Reel 04"
+                    data-desc="AI-Assisted Product Video Production · Careers Emphoria / Laudate Mariam"
+                    aria-label="Cinema Fullscreen">⛶</button>
                 </div>
               </div>
               <div style="padding: 16px;">
                 <span class="badge-category">AI Product Reel · 1:1</span>
-                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">Laudate Mariam — Showcase 04</h4>
-                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">Atmospheric product reveal with clean religious iconography composition.</p>
+                <h4 style="font-family: var(--font-serif); font-size: 1.05rem; margin-top: 6px; color: var(--cream);">
+                  Laudate Mariam — Showcase 04</h4>
+                <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 4px;">Atmospheric product reveal
+                  with clean religious iconography composition.</p>
               </div>
             </article>
 
@@ -3888,46 +5236,66 @@
             <!-- AI Bottle 1 -->
             <article class="vertical-video-card reveal">
               <div class="vertical-viewport">
-                <video class="portfolio-video" muted loop playsinline preload="metadata" aria-label="The Bottle AI Edit 1">
+                <video class="portfolio-video" muted loop playsinline preload="metadata"
+                  aria-label="The Bottle AI Edit 1">
                   <source src="videos/AI BOTTLE SAMPLE EDITS/NEW. THE BOTTLE.mp4" type="video/mp4">
                 </video>
                 <div class="video-overlay-ctrls">
                   <button class="video-play-btn" data-action="toggle-play" aria-label="Play Bottle Edit 1">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </button>
                 </div>
                 <div class="video-corner-ctrls">
-                  <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                  <button class="btn-video-icon btn-expand" data-video="videos/AI BOTTLE SAMPLE EDITS/NEW. THE BOTTLE.mp4" data-title="The Bottle &mdash; AI Commercial Edit 01" data-desc="AI Video Editing & Commercial Product Visualization" aria-label="Cinema Fullscreen">⛶</button>
+                  <button class="btn-video-icon btn-sound" data-action="toggle-sound"
+                    aria-label="Toggle mute">🔇</button>
+                  <button class="btn-video-icon btn-expand"
+                    data-video="videos/AI BOTTLE SAMPLE EDITS/NEW. THE BOTTLE.mp4"
+                    data-title="The Bottle &mdash; AI Commercial Edit 01"
+                    data-desc="AI Video Editing & Commercial Product Visualization"
+                    aria-label="Cinema Fullscreen">⛶</button>
                 </div>
               </div>
               <div style="padding: 22px;">
                 <span class="badge-category">AI Commercial Edit &middot; 9:16</span>
-                <h4 style="font-family: var(--font-serif); font-size: 1.18rem; margin-top: 8px; color: var(--cream);">The Bottle &mdash; Visualization 01</h4>
-                <p style="font-size: 0.88rem; color: var(--cream-muted); margin-top: 6px;">Commercial beverage visualization exploring fluid movement, dynamic condensation effects, and high-energy pace cuts.</p>
+                <h4 style="font-family: var(--font-serif); font-size: 1.18rem; margin-top: 8px; color: var(--cream);">
+                  The Bottle &mdash; Visualization 01</h4>
+                <p style="font-size: 0.88rem; color: var(--cream-muted); margin-top: 6px;">Commercial beverage
+                  visualization exploring fluid movement, dynamic condensation effects, and high-energy pace cuts.</p>
               </div>
             </article>
 
             <!-- AI Bottle 2 -->
             <article class="vertical-video-card reveal reveal-delay-1">
               <div class="vertical-viewport">
-                <video class="portfolio-video" muted loop playsinline preload="metadata" aria-label="The Bottle AI Edit 2">
+                <video class="portfolio-video" muted loop playsinline preload="metadata"
+                  aria-label="The Bottle AI Edit 2">
                   <source src="videos/AI BOTTLE SAMPLE EDITS/THE BOTTLE F.mp4" type="video/mp4">
                 </video>
                 <div class="video-overlay-ctrls">
                   <button class="video-play-btn" data-action="toggle-play" aria-label="Play Bottle Edit 2">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </button>
                 </div>
                 <div class="video-corner-ctrls">
-                  <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                  <button class="btn-video-icon btn-expand" data-video="videos/AI BOTTLE SAMPLE EDITS/THE BOTTLE F.mp4" data-title="The Bottle &mdash; Final Showcase" data-desc="AI Video Editing & Commercial Product Visualization" aria-label="Cinema Fullscreen">⛶</button>
+                  <button class="btn-video-icon btn-sound" data-action="toggle-sound"
+                    aria-label="Toggle mute">🔇</button>
+                  <button class="btn-video-icon btn-expand" data-video="videos/AI BOTTLE SAMPLE EDITS/THE BOTTLE F.mp4"
+                    data-title="The Bottle &mdash; Final Showcase"
+                    data-desc="AI Video Editing & Commercial Product Visualization"
+                    aria-label="Cinema Fullscreen">⛶</button>
                 </div>
               </div>
               <div style="padding: 22px;">
                 <span class="badge-category">Commercial Showcase &middot; 9:16</span>
-                <h4 style="font-family: var(--font-serif); font-size: 1.18rem; margin-top: 8px; color: var(--cream);">The Bottle &mdash; Final Cut</h4>
-                <p style="font-size: 0.88rem; color: var(--cream-muted); margin-top: 6px;">Refined commercial edit featuring enhanced dynamic color grading, product silhouette lighting, and audio-synced transitions.</p>
+                <h4 style="font-family: var(--font-serif); font-size: 1.18rem; margin-top: 8px; color: var(--cream);">
+                  The Bottle &mdash; Final Cut</h4>
+                <p style="font-size: 0.88rem; color: var(--cream-muted); margin-top: 6px;">Refined commercial edit
+                  featuring enhanced dynamic color grading, product silhouette lighting, and audio-synced transitions.
+                </p>
               </div>
             </article>
 
@@ -3945,24 +5313,31 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Brand Ambassadorship &middot; Technology &middot; Creative Content</div>
           <h2 class="section-title">Student Samsung <span>Ambassador</span></h2>
-          <p class="section-subtitle">Mobile technology lifestyle storytelling, student creator workflow demonstration, and authentic brand engagement.</p>
+          <p class="section-subtitle">Mobile technology lifestyle storytelling, student creator workflow demonstration,
+            and authentic brand engagement.</p>
         </div>
 
         <div class="ambassador-spotlight reveal">
           <!-- Video Showcase Frame -->
           <div class="ambassador-player-frame reveal reveal-3d-scale">
             <div class="vertical-viewport">
-              <video class="portfolio-video" muted loop playsinline preload="metadata" aria-label="Student Samsung Ambassador Video">
+              <video class="portfolio-video" muted loop playsinline preload="metadata"
+                aria-label="Student Samsung Ambassador Video">
                 <source src="videos/student samsung ambassor/AMBASSADOR.mp4" type="video/mp4">
               </video>
               <div class="video-overlay-ctrls">
                 <button class="video-play-btn" data-action="toggle-play" aria-label="Play Samsung Ambassador Video">
-                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </button>
               </div>
               <div class="video-corner-ctrls">
-                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔊</button>
-                <button class="btn-video-icon btn-expand" data-video="videos/student samsung ambassor/AMBASSADOR.mp4" data-title="Student Samsung Ambassador" data-desc="Brand Experience &middot; Student Ambassador Creative Showcase" aria-label="Cinema Fullscreen">⛶</button>
+                <button class="btn-video-icon btn-sound" data-action="toggle-sound" aria-label="Toggle mute">🔇</button>
+                <button class="btn-video-icon btn-expand" data-video="videos/student samsung ambassor/AMBASSADOR.mp4"
+                  data-title="Student Samsung Ambassador"
+                  data-desc="Brand Experience &middot; Student Ambassador Creative Showcase"
+                  aria-label="Cinema Fullscreen">⛶</button>
               </div>
             </div>
           </div>
@@ -3978,12 +5353,16 @@
             <h3 class="ambassador-title">Mobile Technology & <span>Creator Storytelling</span></h3>
 
             <div class="ambassador-org">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
               <span>Student Samsung Ambassador Activity</span>
             </div>
 
             <p class="ambassador-desc">
-              A dynamic brand ambassador video demonstrating mobile technology features, student creator workflows, and lifestyle visual storytelling. Produced in full vertical format (9:16) with audio-synced rhythm cuts, clean typography, and seamless transitions tailored for social media engagement.
+              A dynamic brand ambassador video demonstrating mobile technology features, student creator workflows, and
+              lifestyle visual storytelling. Produced in full vertical format (9:16) with audio-synced rhythm cuts,
+              clean typography, and seamless transitions tailored for social media engagement.
             </p>
           </div>
         </div>
@@ -3999,7 +5378,8 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Visual Branding & Pubmats</div>
           <h2 class="section-title">Graphic Design & <span>Posters</span></h2>
-          <p class="section-subtitle">Promotional branding, restaurant marketing campaigns, student organization publication materials, and cinematic key art.</p>
+          <p class="section-subtitle">Promotional branding, restaurant marketing campaigns, student organization
+            publication materials, and cinematic key art.</p>
         </div>
 
         <!-- Poster Filter Tabs -->
@@ -4013,9 +5393,13 @@
         <div class="poster-gallery-grid stagger-grid" id="posterGallery">
 
           <!-- BLESSIE FOOD HUB POSTERS (15 Images) -->
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (1).jpg" data-lightbox-title="Blessie Food Hub — Signature Roast Chicken" data-lightbox-desc="Social media marketing campaign poster">
+          <article class="poster-item-card reveal" data-category="blessie" id="blessie-posters"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (1).jpg"
+            data-lightbox-title="Blessie Food Hub — Signature Roast Chicken"
+            data-lightbox-desc="Social media marketing campaign poster">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (1).jpg" alt="Blessie Food Hub Promotional Poster 1" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (1).jpg" alt="Blessie Food Hub Promotional Poster 1"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4024,9 +5408,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (2).jpg" data-lightbox-title="Blessie Food Hub — Daily Lunch Promo" data-lightbox-desc="Restaurant promotional pubmat">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (2).jpg"
+            data-lightbox-title="Blessie Food Hub — Daily Lunch Promo"
+            data-lightbox-desc="Restaurant promotional pubmat">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (2).jpg" alt="Blessie Food Hub Promotional Poster 2" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (2).jpg" alt="Blessie Food Hub Promotional Poster 2"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4035,9 +5423,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (3).jpg" data-lightbox-title="Blessie Food Hub — Family Feast Special" data-lightbox-desc="Social media promotional graphics">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (3).jpg"
+            data-lightbox-title="Blessie Food Hub — Family Feast Special"
+            data-lightbox-desc="Social media promotional graphics">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (3).jpg" alt="Blessie Food Hub Promotional Poster 3" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (3).jpg" alt="Blessie Food Hub Promotional Poster 3"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4046,9 +5438,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (4).jpg" data-lightbox-title="Blessie Food Hub — Weekend BBQ Grill" data-lightbox-desc="Social media event campaign announcement">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (4).jpg"
+            data-lightbox-title="Blessie Food Hub — Weekend BBQ Grill"
+            data-lightbox-desc="Social media event campaign announcement">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (4).jpg" alt="Blessie Food Hub Promotional Poster 4" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (4).jpg" alt="Blessie Food Hub Promotional Poster 4"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4057,9 +5453,12 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (5).jpg" data-lightbox-title="Blessie Food Hub — Best Sellers Menu" data-lightbox-desc="Promotional menu layout">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (5).jpg"
+            data-lightbox-title="Blessie Food Hub — Best Sellers Menu" data-lightbox-desc="Promotional menu layout">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (5).jpg" alt="Blessie Food Hub Promotional Poster 5" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (5).jpg" alt="Blessie Food Hub Promotional Poster 5"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4068,9 +5467,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (6).jpg" data-lightbox-title="Blessie Food Hub — Sizzling Specials" data-lightbox-desc="Restaurant promotional pubmat">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (6).jpg"
+            data-lightbox-title="Blessie Food Hub — Sizzling Specials"
+            data-lightbox-desc="Restaurant promotional pubmat">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (6).jpg" alt="Blessie Food Hub Promotional Poster 6" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (6).jpg" alt="Blessie Food Hub Promotional Poster 6"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4079,9 +5482,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (7).jpg" data-lightbox-title="Blessie Food Hub — Crispy Favorites" data-lightbox-desc="Social media campaign branding">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (7).jpg"
+            data-lightbox-title="Blessie Food Hub — Crispy Favorites"
+            data-lightbox-desc="Social media campaign branding">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (7).jpg" alt="Blessie Food Hub Promotional Poster 7" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (7).jpg" alt="Blessie Food Hub Promotional Poster 7"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4090,9 +5497,12 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (8).jpg" data-lightbox-title="Blessie Food Hub — Refreshing Coolers" data-lightbox-desc="Beverage promotion pubmat">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (8).jpg"
+            data-lightbox-title="Blessie Food Hub — Refreshing Coolers" data-lightbox-desc="Beverage promotion pubmat">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (8).jpg" alt="Blessie Food Hub Promotional Poster 8" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (8).jpg" alt="Blessie Food Hub Promotional Poster 8"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4101,9 +5511,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (9).jpg" data-lightbox-title="Blessie Food Hub — Chef's Platter" data-lightbox-desc="Storefront marketing announcement">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (9).jpg"
+            data-lightbox-title="Blessie Food Hub — Chef's Platter"
+            data-lightbox-desc="Storefront marketing announcement">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (9).jpg" alt="Blessie Food Hub Promotional Poster 9" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (9).jpg" alt="Blessie Food Hub Promotional Poster 9"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4112,9 +5526,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (10).jpg" data-lightbox-title="Blessie Food Hub — Party Package Bundle" data-lightbox-desc="Catering & event package design">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (10).jpg"
+            data-lightbox-title="Blessie Food Hub — Party Package Bundle"
+            data-lightbox-desc="Catering & event package design">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (10).jpg" alt="Blessie Food Hub Promotional Poster 10" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (10).jpg" alt="Blessie Food Hub Promotional Poster 10"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4123,9 +5541,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (11).jpg" data-lightbox-title="Blessie Food Hub — Grand Opening / Anniversary" data-lightbox-desc="Celebratory event banner design">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (11).jpg"
+            data-lightbox-title="Blessie Food Hub — Grand Opening / Anniversary"
+            data-lightbox-desc="Celebratory event banner design">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (11).jpg" alt="Blessie Food Hub Promotional Poster 11" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (11).jpg" alt="Blessie Food Hub Promotional Poster 11"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4134,9 +5556,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (12).jpg" data-lightbox-title="Blessie Food Hub — Snack Bites Combo" data-lightbox-desc="Afternoon snacks promotional poster">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (12).jpg"
+            data-lightbox-title="Blessie Food Hub — Snack Bites Combo"
+            data-lightbox-desc="Afternoon snacks promotional poster">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (12).jpg" alt="Blessie Food Hub Promotional Poster 12" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (12).jpg" alt="Blessie Food Hub Promotional Poster 12"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4145,9 +5571,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (13).jpg" data-lightbox-title="Blessie Food Hub — Rice Bowl Specials" data-lightbox-desc="Value meal promotion pubmat">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (13).jpg"
+            data-lightbox-title="Blessie Food Hub — Rice Bowl Specials"
+            data-lightbox-desc="Value meal promotion pubmat">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (13).jpg" alt="Blessie Food Hub Promotional Poster 13" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (13).jpg" alt="Blessie Food Hub Promotional Poster 13"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4156,9 +5586,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (14).jpg" data-lightbox-title="Blessie Food Hub — Weekend Buffet / Feast" data-lightbox-desc="Weekend buffet campaign poster">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (14).jpg"
+            data-lightbox-title="Blessie Food Hub — Weekend Buffet / Feast"
+            data-lightbox-desc="Weekend buffet campaign poster">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (14).jpg" alt="Blessie Food Hub Promotional Poster 14" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (14).jpg" alt="Blessie Food Hub Promotional Poster 14"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4167,9 +5601,13 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="blessie" data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (15).jpg" data-lightbox-title="Blessie Food Hub — Takeout & Delivery" data-lightbox-desc="Delivery service announcement graphics">
+          <article class="poster-item-card reveal" data-category="blessie"
+            data-lightbox-src="images/BLESSIE FOOD HUB POSTERS/2 (15).jpg"
+            data-lightbox-title="Blessie Food Hub — Takeout & Delivery"
+            data-lightbox-desc="Delivery service announcement graphics">
             <div class="poster-img-container">
-              <img src="images/BLESSIE FOOD HUB POSTERS/2 (15).jpg" alt="Blessie Food Hub Promotional Poster 15" loading="lazy">
+              <img src="images/BLESSIE FOOD HUB POSTERS/2 (15).jpg" alt="Blessie Food Hub Promotional Poster 15"
+                loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
             </div>
             <div class="poster-caption-bar">
@@ -4179,7 +5617,10 @@
           </article>
 
           <!-- BSOA ALLIANCE POSTERS (5 Images) -->
-          <article class="poster-item-card reveal" data-category="bsoa" data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (1).jpg" data-lightbox-title="BSOA Alliance — Student Leadership Assembly" data-lightbox-desc="Official student organization pubmat">
+          <article class="poster-item-card reveal" data-category="bsoa"
+            data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (1).jpg"
+            data-lightbox-title="BSOA Alliance — Student Leadership Assembly"
+            data-lightbox-desc="Official student organization pubmat">
             <div class="poster-img-container">
               <img src="images/BSOA ALLIANCE POSTERS/1 (1).jpg" alt="BSOA Alliance Poster 1" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4190,7 +5631,10 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="bsoa" data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (2).jpg" data-lightbox-title="BSOA Alliance — Academic Seminar & Workshop" data-lightbox-desc="Professional skills development symposium">
+          <article class="poster-item-card reveal" data-category="bsoa"
+            data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (2).jpg"
+            data-lightbox-title="BSOA Alliance — Academic Seminar & Workshop"
+            data-lightbox-desc="Professional skills development symposium">
             <div class="poster-img-container">
               <img src="images/BSOA ALLIANCE POSTERS/1 (2).jpg" alt="BSOA Alliance Poster 2" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4201,7 +5645,10 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="bsoa" data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (3).jpg" data-lightbox-title="BSOA Alliance — Office Administration Month" data-lightbox-desc="Institutional departmental celebration poster">
+          <article class="poster-item-card reveal" data-category="bsoa"
+            data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (3).jpg"
+            data-lightbox-title="BSOA Alliance — Office Administration Month"
+            data-lightbox-desc="Institutional departmental celebration poster">
             <div class="poster-img-container">
               <img src="images/BSOA ALLIANCE POSTERS/1 (3).jpg" alt="BSOA Alliance Poster 3" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4212,7 +5659,10 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="bsoa" data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (4).jpg" data-lightbox-title="BSOA Alliance — Membership Campaign" data-lightbox-desc="Student body registration graphics">
+          <article class="poster-item-card reveal" data-category="bsoa"
+            data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (4).jpg"
+            data-lightbox-title="BSOA Alliance — Membership Campaign"
+            data-lightbox-desc="Student body registration graphics">
             <div class="poster-img-container">
               <img src="images/BSOA ALLIANCE POSTERS/1 (4).jpg" alt="BSOA Alliance Poster 4" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4223,7 +5673,10 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="bsoa" data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (5).jpg" data-lightbox-title="BSOA Alliance — Leadership Summit" data-lightbox-desc="Executive officer training announcement">
+          <article class="poster-item-card reveal" data-category="bsoa"
+            data-lightbox-src="images/BSOA ALLIANCE POSTERS/1 (5).jpg"
+            data-lightbox-title="BSOA Alliance — Leadership Summit"
+            data-lightbox-desc="Executive officer training announcement">
             <div class="poster-img-container">
               <img src="images/BSOA ALLIANCE POSTERS/1 (5).jpg" alt="BSOA Alliance Poster 5" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4235,7 +5688,9 @@
           </article>
 
           <!-- FILM KEY ART (3 Posters) -->
-          <article class="poster-item-card reveal" data-category="film-art" data-lightbox-src="posters/kahel.jpg" data-lightbox-title="KAHEL — Official Film Poster" data-lightbox-desc="Key art for Champion / Best Film award-winning production">
+          <article class="poster-item-card reveal" data-category="film-art" data-lightbox-src="posters/kahel.jpg"
+            data-lightbox-title="KAHEL — Official Film Poster"
+            data-lightbox-desc="Key art for Champion / Best Film award-winning production">
             <div class="poster-img-container">
               <img src="posters/kahel.jpg" alt="Official Kahel Film Poster" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4246,7 +5701,9 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="film-art" data-lightbox-src="posters/suga.jpg" data-lightbox-title="SUGA — Official Film Poster" data-lightbox-desc="Key art design for Champion film production">
+          <article class="poster-item-card reveal" data-category="film-art" data-lightbox-src="posters/suga.jpg"
+            data-lightbox-title="SUGA — Official Film Poster"
+            data-lightbox-desc="Key art design for Champion film production">
             <div class="poster-img-container">
               <img src="posters/suga.jpg" alt="Official Suga Film Poster" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4257,7 +5714,9 @@
             </div>
           </article>
 
-          <article class="poster-item-card reveal" data-category="film-art" data-lightbox-src="posters/between-deadlines.jpg" data-lightbox-title="Between Deadlines — Official Poster" data-lightbox-desc="Key art design for 1st Runner Up production">
+          <article class="poster-item-card reveal" data-category="film-art"
+            data-lightbox-src="posters/between-deadlines.jpg" data-lightbox-title="Between Deadlines — Official Poster"
+            data-lightbox-desc="Key art design for 1st Runner Up production">
             <div class="poster-img-container">
               <img src="posters/between-deadlines.jpg" alt="Between Deadlines Official Poster" loading="lazy">
               <div class="poster-hover-zoom">⛶</div>
@@ -4280,35 +5739,42 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Creative Methodology</div>
           <h2 class="section-title">How I <span>Work</span></h2>
-          <p class="section-subtitle">A disciplined four-phase approach ensuring every project delivers narrative emotional resonance and operational efficiency.</p>
+          <p class="section-subtitle">A disciplined four-phase approach ensuring every project delivers narrative
+            emotional resonance and operational efficiency.</p>
         </div>
 
         <div class="process-steps stagger-grid">
           <div class="process-card reveal">
             <div class="process-num">01</div>
             <h3>Discovery & Concept</h3>
-            <p>Clarifying objectives, audience psychology, script outlines, moodboards, and logistical timelines before production begins.</p>
+            <p>Clarifying objectives, audience psychology, script outlines, moodboards, and logistical timelines before
+              production begins.</p>
           </div>
           <div class="process-card reveal reveal-delay-1">
             <div class="process-num">02</div>
             <h3>Production Planning</h3>
-            <p>On-set direction, equipment coordination, shot lists, crew scheduling, and meticulous documentation of all production assets.</p>
+            <p>On-set direction, equipment coordination, shot lists, crew scheduling, and meticulous documentation of
+              all production assets.</p>
           </div>
           <div class="process-card reveal reveal-delay-2">
             <div class="process-num">03</div>
             <h3>Post-Production Polish</h3>
-            <p>Precision video editing, audio mixing, music pacing, cinematic color grading, and continuous iterative refinements.</p>
+            <p>Precision video editing, audio mixing, music pacing, cinematic color grading, and continuous iterative
+              refinements.</p>
           </div>
           <div class="process-card reveal reveal-delay-3">
             <div class="process-num">04</div>
             <h3>Delivery & Systems</h3>
-            <p>Multi-channel optimization, final asset exports, organized cloud archiving, and measurable campaign deployment.</p>
+            <p>Multi-channel optimization, final asset exports, organized cloud archiving, and measurable campaign
+              deployment.</p>
           </div>
         </div>
 
         <!-- Behind The Scenes Stills -->
-        <div class="bts-grid">
-          <div class="bts-card reveal" data-lightbox-src="work/first.jpg" data-lightbox-title="Behind The Scenes — On-Set Production" data-lightbox-desc="Directing and orchestrating cinematic setups on location">
+        <div class="bts-grid" id="bts">
+          <div class="bts-card reveal" data-lightbox-src="work/first.jpg"
+            data-lightbox-title="Behind The Scenes — On-Set Production"
+            data-lightbox-desc="Directing and orchestrating cinematic setups on location">
             <img src="work/first.jpg" alt="Directing workflow behind the scenes on set" loading="lazy">
             <div class="bts-overlay">
               <span class="bts-tag">On Set · Directing</span>
@@ -4316,7 +5782,9 @@
             </div>
           </div>
 
-          <div class="bts-card reveal reveal-delay-1" data-lightbox-src="work/second.jpg" data-lightbox-title="Behind The Scenes — Production Setup" data-lightbox-desc="Filming and directing key narrative moments with the crew">
+          <div class="bts-card reveal reveal-delay-1" data-lightbox-src="work/second.jpg"
+            data-lightbox-title="Behind The Scenes — Production Setup"
+            data-lightbox-desc="Filming and directing key narrative moments with the crew">
             <img src="work/second.jpg" alt="Production crew and camera setup behind the scenes" loading="lazy">
             <div class="bts-overlay">
               <span class="bts-tag">Production Logistics</span>
@@ -4335,7 +5803,8 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Visual Stories</div>
           <h2 class="section-title">Photography <span>Through My Lens</span></h2>
-          <p class="section-subtitle">Moments, portraits, street geometry, and authentic atmospheres captured across Negros Occidental.</p>
+          <p class="section-subtitle">Moments, portraits, street geometry, and authentic atmospheres captured across
+            Negros Occidental.</p>
         </div>
 
         <div class="photo-view-switcher reveal">
@@ -4357,11 +5826,13 @@
             <div class="photo-caption-card">
               <span class="photo-caption-meta" id="photoMeta">Photography · 2026</span>
               <h3 class="photo-caption-title" id="photoTitle">Editorial Portrait</h3>
-              <p class="photo-caption-desc" id="photoDesc">Captured in natural studio lighting with sharp contrasts and authentic emotion.</p>
-              
+              <p class="photo-caption-desc" id="photoDesc">Captured in natural studio lighting with sharp contrasts and
+                authentic emotion.</p>
+
               <div class="stack-nav-ctrls">
                 <button class="btn-stack-ctrl" id="btnPrevPhoto">← Previous</button>
-                <button class="btn-stack-ctrl" id="btnNextPhoto" style="border-color: var(--bronze-bright); color: var(--bronze-bright);">Next Photo →</button>
+                <button class="btn-stack-ctrl" id="btnNextPhoto"
+                  style="border-color: var(--bronze-bright); color: var(--bronze-bright);">Next Photo →</button>
                 <button class="btn-stack-ctrl" id="btnInspectCurrent">Zoom ⛶</button>
               </div>
             </div>
@@ -4391,7 +5862,8 @@
         <div class="section-header text-center reveal">
           <div class="eyebrow">Capabilities & Toolkit</div>
           <h2 class="section-title">Skills & <span>Technologies</span></h2>
-          <p class="section-subtitle">Bridging creative media production with modern generative AI pipelines, marketing campaign design, and executive office software.</p>
+          <p class="section-subtitle">Bridging creative media production with modern generative AI pipelines, marketing
+            campaign design, and executive office software.</p>
         </div>
 
         <div class="skills-layout stagger-grid">
@@ -4400,7 +5872,8 @@
           <article class="skill-card reveal">
             <span class="skill-kicker">Creative Production</span>
             <h3>Visual Storytelling</h3>
-            <p>End-to-end filmmaking, directing, cinematography, video editing, color grading, lighting, and narrative audio design.</p>
+            <p>End-to-end filmmaking, directing, cinematography, video editing, color grading, lighting, and narrative
+              audio design.</p>
             <div class="skill-pill-list">
               <span class="skill-pill">Filmmaking</span>
               <span class="skill-pill">Film Direction</span>
@@ -4417,7 +5890,8 @@
           <article class="skill-card reveal reveal-delay-1">
             <span class="skill-kicker">Marketing & Executive VA</span>
             <h3>AI Content & Administration</h3>
-            <p>AI product video creation, social media management, client coordination, office administration, and document management.</p>
+            <p>AI product video creation, social media management, client coordination, office administration, and
+              document management.</p>
             <div class="skill-pill-list">
               <span class="skill-pill">AI Video Production</span>
               <span class="skill-pill">Social Media Mgmt</span>
@@ -4430,11 +5904,14 @@
             </div>
           </article>
 
-          <!-- 3. Software Tools Grid -->
-          <article class="skill-card reveal reveal-delay-2">
-            <span class="skill-kicker">Digital Toolkit</span>
-            <h3>Software & Platforms</h3>
-            <p>Industry-standard post-production, graphic design, productivity software, and generative AI platforms.</p>
+          <!-- 3. Software Tools Grid (Full Width Landscape) -->
+          <article class="skill-card skill-card-toolkit reveal reveal-delay-2">
+            <div class="toolkit-header">
+              <span class="skill-kicker">Digital Toolkit</span>
+              <h3>Software & Platforms</h3>
+              <p>Industry-standard post-production, graphic design, productivity software, and generative AI platforms.
+              </p>
+            </div>
 
             <div class="tools-modern-grid stagger-grid">
               <div class="tool-item reveal reveal-up">
@@ -4464,7 +5941,9 @@
               </div>
               <div class="tool-item reveal reveal-up">
                 <div class="tool-icon-box">
-                  <div style="width: 28px; height: 28px; background: #001e36; border: 1px solid #31a8ff; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #31a8ff; font-size: 14px;">Ps</div>
+                  <div
+                    style="width: 28px; height: 28px; background: #001e36; border: 1px solid #31a8ff; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #31a8ff; font-size: 14px;">
+                    Ps</div>
                 </div>
                 <span class="tool-name">Photoshop</span>
                 <span class="tool-category">Graphics</span>
@@ -4491,7 +5970,10 @@
               </div>
               <div class="tool-item reveal reveal-up">
                 <div class="tool-icon-box">
-                  <svg viewBox="0 0 24 24" fill="#10a37f"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.259 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7466-7.0729z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="#10a37f">
+                    <path
+                      d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.259 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7466-7.0729z" />
+                  </svg>
                 </div>
                 <span class="tool-name">ChatGPT</span>
                 <span class="tool-category">AI Workflows</span>
@@ -4503,7 +5985,9 @@
               </div>
               <div class="tool-item reveal reveal-up">
                 <div class="tool-icon-box">
-                  <div style="width: 28px; height: 28px; background: #2d8cff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 14px;">Z</div>
+                  <div
+                    style="width: 28px; height: 28px; background: #2d8cff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 14px;">
+                    Z</div>
                 </div>
                 <span class="tool-name">Zoom</span>
                 <span class="tool-category">Meetings</span>
@@ -4526,7 +6010,8 @@
             <div class="eyebrow">Get In Touch</div>
             <h2 class="section-title">Let’s Create <span>Something Impactful.</span></h2>
             <p class="section-subtitle">
-              Available for film directing, AI product video production, graphic design campaigns, social media management, and remote virtual assistant / administrative roles.
+              Available for film directing, AI product video production, graphic design campaigns, social media
+              management, and remote virtual assistant / administrative roles.
             </p>
 
             <div class="contact-cards-stack">
@@ -4539,7 +6024,8 @@
                     <a href="mailto:nazzyyee.work@gmail.com" class="contact-method-value">nazzyyee.work@gmail.com</a>
                   </div>
                 </div>
-                <button class="btn-copy-action" id="btnCopyEmail" data-copy="nazzyyee.work@gmail.com">Copy Email</button>
+                <button class="btn-copy-action" id="btnCopyEmail" data-copy="nazzyyee.work@gmail.com">Copy
+                  Email</button>
               </div>
 
               <!-- Phone Card -->
@@ -4568,15 +6054,23 @@
             </div>
 
             <div style="margin-top: 6px;">
-              <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px;">
+              <div
+                style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px;">
                 Verified Profiles & Socials
               </div>
               <div class="social-links-bar">
-                <a class="social-link-btn" href="https://github.com/nazarheneyee-commits" target="_blank" rel="noopener" aria-label="GitHub Repository">
-                  <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                <a class="social-link-btn" href="https://github.com/nazarheneyee-commits" target="_blank" rel="noopener"
+                  aria-label="GitHub Repository">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
                 </a>
                 <a class="social-link-btn" href="mailto:nazzyyee.work@gmail.com" aria-label="Send direct email">
-                  <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                  </svg>
                 </a>
               </div>
             </div>
@@ -4584,7 +6078,8 @@
 
           <div class="contact-form-card reveal">
             <h3 class="contact-form-title">Send a Direct Message</h3>
-            <p class="contact-form-subtitle">Have a project, role opening, or collaboration in mind? Leave a message below.</p>
+            <p class="contact-form-subtitle">Have a project, role opening, or collaboration in mind? Leave a message
+              below.</p>
 
             <form id="portfolioContactForm">
               <div class="form-group">
@@ -4594,14 +6089,16 @@
 
               <div class="form-group">
                 <label class="form-label" for="senderEmail">Email Address</label>
-                <input class="form-input" type="email" id="senderEmail" name="email" placeholder="e.g. john@company.com" required>
+                <input class="form-input" type="email" id="senderEmail" name="email" placeholder="e.g. john@company.com"
+                  required>
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="serviceSelect">Service / Collaboration Type</label>
                 <select class="form-select" id="serviceSelect" name="service">
                   <option value="Film Direction & Video Production">Film Direction & Video Production</option>
-                  <option value="AI Video Production & Product Commercials">AI Video Production & Product Commercials</option>
+                  <option value="AI Video Production & Product Commercials">AI Video Production & Product Commercials
+                  </option>
                   <option value="Graphic Design & Promotional Posters">Graphic Design & Promotional Posters</option>
                   <option value="Social Media Management">Social Media Management</option>
                   <option value="Virtual Assistance & Administrative Support">Virtual Assistance & Office Admin</option>
@@ -4612,7 +6109,8 @@
 
               <div class="form-group">
                 <label class="form-label" for="senderMessage">Project Scope or Message</label>
-                <textarea class="form-textarea" id="senderMessage" name="message" placeholder="Briefly describe your project, schedule, or role details..." required></textarea>
+                <textarea class="form-textarea" id="senderMessage" name="message"
+                  placeholder="Briefly describe your project, schedule, or role details..." required></textarea>
               </div>
 
               <button type="submit" class="btn btn-primary" style="width: 100%;">
@@ -4620,7 +6118,8 @@
               </button>
 
               <div class="form-notification" id="formNotification">
-                ✓ Thank you! Your message draft has been prepared. Clicking below will open your email client to send directly to <strong>nazzyyee.work@gmail.com</strong>.
+                ✓ Thank you! Your message draft has been prepared. Clicking below will open your email client to send
+                directly to <strong>nazzyyee.work@gmail.com</strong>.
               </div>
             </form>
           </div>
@@ -4638,7 +6137,6 @@
     <div class="container footer-inner reveal reveal-up">
       <div class="footer-copy">
         © 2026 <strong>Ma. Nazarhene Nichola S. Yee</strong>. All Rights Reserved.<br>
-        <span style="font-size: 0.78rem; color: var(--text-muted);">Film Director · AI Content Creator · Graphic Designer · Marketing & Administrative Lead</span>
       </div>
 
       <button class="btn-back-to-top" id="btnBackToTop" aria-label="Back to top">
@@ -4672,15 +6170,20 @@
        14. IMAGE LIGHTBOX MODAL
   ======================================================== -->
   <div class="modal-backdrop" id="imageLightboxModal" role="dialog" aria-modal="true" aria-label="Image Lightbox">
-    <button class="modal-close-btn" id="btnLightboxClose" style="position: fixed; top: 22px; right: 22px;" aria-label="Close image">✕</button>
+    <button class="modal-close-btn" id="btnLightboxClose" style="position: fixed; top: 22px; right: 22px;"
+      aria-label="Close image">✕</button>
     <div class="image-lightbox-container">
       <img id="lightboxImage" src="" alt="Enlarged view">
       <div class="image-lightbox-caption" id="lightboxCaption"></div>
+    </div>
   </div>
 
   <!-- Floating Scroll-to-Top Button (Animates in on Scroll UP) -->
   <button class="floating-top-pill" id="floatingTopBtn" aria-label="Scroll back to top">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
     <span>Top</span>
   </button>
 
@@ -4781,6 +6284,84 @@
     sections.forEach(sec => activeSectionObserver.observe(sec));
 
     /* =========================================================
+       THEME TOGGLE ENGINE (PREMIUM LIGHT & DARK MODE)
+       Buttery-smooth, cinema-grade transitions across all tokens
+    ========================================================= */
+    const themeToggle = document.getElementById('themeToggle');
+    const themeToggleMobile = document.getElementById('themeToggleMobile');
+    const mobileThemeText = document.querySelector('.mobile-theme-text');
+    let themeTransitionTimer = null;
+
+    function updateThemeUI(theme) {
+      const isLight = theme === 'light';
+      const label = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+      if (themeToggle) {
+        themeToggle.setAttribute('aria-label', label);
+        themeToggle.setAttribute('title', label);
+      }
+      if (themeToggleMobile) {
+        themeToggleMobile.setAttribute('aria-label', label);
+      }
+      if (mobileThemeText) {
+        mobileThemeText.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+      }
+    }
+
+    function setTheme(newTheme, persist = true) {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === newTheme && !persist) return;
+
+      // 1. Prime the coordinated transition class
+      document.documentElement.classList.add('theme-transitioning');
+      // 2. Force reflow so the browser engine primes the transition rule before property mutation
+      void document.documentElement.offsetHeight;
+      // 3. Mutate theme token state
+      document.documentElement.setAttribute('data-theme', newTheme);
+
+      if (persist) {
+        try {
+          localStorage.setItem('nazzy-theme', newTheme);
+        } catch (e) { }
+      }
+      updateThemeUI(newTheme);
+
+      // 4. Safely remove transition class once smooth animation has fully concluded
+      if (themeTransitionTimer) clearTimeout(themeTransitionTimer);
+      themeTransitionTimer = setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      }, 520);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      setTheme(newTheme, true);
+    }
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', toggleTheme);
+    }
+    if (themeToggleMobile) {
+      themeToggleMobile.addEventListener('click', toggleTheme);
+    }
+
+    // Sync UI state with active theme
+    const initialActiveTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    updateThemeUI(initialActiveTheme);
+
+    // Listen for system theme changes if no explicit preference saved
+    try {
+      const systemDarkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      systemDarkQuery.addEventListener('change', (e) => {
+        try {
+          if (!localStorage.getItem('nazzy-theme')) {
+            setTheme(e.matches ? 'dark' : 'light', false);
+          }
+        } catch (err) { }
+      });
+    } catch (e) { }
+
+    /* =========================================================
        2. MOBILE MENU BEHAVIOR
     ========================================================= */
     const menuButton = document.getElementById('menuButton');
@@ -4789,6 +6370,7 @@
     function toggleMenu() {
       const isOpen = mobileNav.classList.toggle('open');
       menuButton.setAttribute('aria-expanded', isOpen);
+      document.body.classList.toggle('menu-open', isOpen);
     }
 
     menuButton.addEventListener('click', toggleMenu);
@@ -4797,7 +6379,26 @@
       link.addEventListener('click', () => {
         mobileNav.classList.remove('open');
         menuButton.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
       });
+    });
+
+    // Escape key accessibility handler
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (mobileNav && mobileNav.classList.contains('open')) {
+          mobileNav.classList.remove('open');
+          menuButton.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('menu-open');
+          menuButton.focus();
+        }
+        if (cinemaModal && cinemaModal.classList.contains('active')) {
+          closeCinemaModal();
+        }
+        if (imageLightboxModal && imageLightboxModal.classList.contains('active')) {
+          closeImageLightbox();
+        }
+      }
     });
 
     // =========================================================
@@ -4840,7 +6441,7 @@
     }
 
     // Passive Scroll Parallax Driver for Hero Background Layers
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (window.innerWidth > 768 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const watermark = document.querySelector('.hero-watermark');
       const heroGlow1 = document.querySelector('.hero-glow-1');
       const heroGlow2 = document.querySelector('.hero-glow-2');
@@ -4941,7 +6542,7 @@
       entries.forEach(entry => {
         const vid = entry.target;
         if (entry.isIntersecting) {
-          vid.play().catch(() => {});
+          vid.play().catch(() => { });
         } else {
           vid.pause();
         }
@@ -4982,7 +6583,7 @@
       cinemaModalTitle.textContent = title;
       cinemaModalDesc.textContent = desc;
       cinemaModal.classList.add('active');
-      cinemaModalVideo.play().catch(() => {});
+      cinemaModalVideo.play().catch(() => { });
       document.body.style.overflow = 'hidden';
     }
 
@@ -5166,6 +6767,14 @@
     }
 
     function updateStackPositions() {
+      const isSmallScreen = window.innerWidth <= 600;
+      const offset1 = isSmallScreen ? 10 : 24;
+      const offset2 = isSmallScreen ? 18 : 44;
+      const offset3 = isSmallScreen ? 24 : 60;
+      const rot1 = isSmallScreen ? 2 : 3;
+      const rot2 = isSmallScreen ? -2 : -3;
+      const rot3 = isSmallScreen ? 2.5 : 4;
+
       stackCards.forEach((card, i) => {
         if (i === 0) {
           card.style.transform = 'scale(1) translateX(0) rotate(0deg)';
@@ -5173,22 +6782,22 @@
           card.style.zIndex = '10';
           card.style.pointerEvents = 'auto';
         } else if (i === 1) {
-          card.style.transform = 'scale(0.95) translateX(24px) rotate(3deg)';
+          card.style.transform = `scale(0.95) translateX(${offset1}px) rotate(${rot1}deg)`;
           card.style.opacity = '0.85';
           card.style.zIndex = '9';
           card.style.pointerEvents = 'none';
         } else if (i === 2) {
-          card.style.transform = 'scale(0.9) translateX(44px) rotate(-3deg)';
+          card.style.transform = `scale(0.9) translateX(${offset2}px) rotate(${rot2}deg)`;
           card.style.opacity = '0.55';
           card.style.zIndex = '8';
           card.style.pointerEvents = 'none';
         } else if (i === 3) {
-          card.style.transform = 'scale(0.85) translateX(60px) rotate(4deg)';
+          card.style.transform = `scale(0.85) translateX(${offset3}px) rotate(${rot3}deg)`;
           card.style.opacity = '0.25';
           card.style.zIndex = '7';
           card.style.pointerEvents = 'none';
         } else {
-          card.style.transform = 'scale(0.8) translateX(70px) rotate(0deg)';
+          card.style.transform = `scale(0.8) translateX(${offset3 + 10}px) rotate(0deg)`;
           card.style.opacity = '0';
           card.style.zIndex = '1';
           card.style.pointerEvents = 'none';
@@ -5329,9 +6938,9 @@
 
         const subject = encodeURIComponent(`Inquiry from ${name}: ${service}`);
         const body = encodeURIComponent(`Hello Nazarhene,\n\nName: ${name}\nEmail: ${email}\nService Interested In: ${service}\n\nProject Scope / Message:\n${message}\n\nBest regards,\n${name}`);
-        
+
         formNotification.classList.add('success');
-        
+
         setTimeout(() => {
           window.location.href = `mailto:${OFFICIAL_EMAIL}?subject=${subject}&body=${body}`;
         }, 500);
